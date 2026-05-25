@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Zen Dots', sans-serif;
+ 
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Galaxy gradient */
+  background: linear-gradient(120deg, #0b0033, #110827, #310c3a, #1d0505);
+  background-size: 400% 400%;
+  animation: gradientMove 50s ease infinite;
+}
+
+/* Moving gradient */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Stars layer */
+body::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: transparent url("https://www.transparenttextures.com/patterns/stardust.png");
+  animation: starsMove 100s linear infinite;
+  opacity: 0.6;
+  z-index: -5;
+}
+
+/* Slow drifting stars */
+@keyframes starsMove {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-500px, -500px);
+  }
+
+}
+
+
+.container {
+  text-align: center;
+}
+
+/* HEADER */
+.header {
+  margin-bottom: 30px;
+}
+
+.logo {
+  margin-left: 80px;
+justify-content: center;
+  font-size: 30px;
+  margin-bottom: 10px;
+  height: 100px;
+  width: auto;
+}
+
+.header h1 {
+  font-size: 28px;
+  margin-bottom: 5px;
+  margin-left: -25px;
+}
+
+.header p {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-left: 10px;
+}
+
+/* CARD */
+.card {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: left;
+  backdrop-filter: blur(10px);
+}
+
+.card h2 {
+  margin-bottom: 5px;
+}
+
+.card p {
+  font-size: 11px;
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.card label {
+  font-size: 12px;
+}
+
+.card input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 15px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.card input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.card button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #a855f7, #d946ef);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.card button:hover {
+  opacity: 0.9;
+}
+
+.signup {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.signup a {
+  color: #d946ef;
+  text-decoration: none;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 15px;
+  font-size: 11px;
+  opacity: 0.7;
+  margin-left: -100px;
+} 

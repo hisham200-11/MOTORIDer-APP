@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+<link rel="stylesheet" href="Riderregister.css">
+<link href='https://fonts.googleapis.com/css?family=Zen Dots' rel='stylesheet'>
+</head>
+<body>
+  <div class="card">
+
+  <h2>Create Account</h2>
+  <p class="subtitle">Choose your account type and fill in your details</p>
+
+  <!-- TOGGLE -->
+  <div class="toggle">
+    <div class="toggle-btn active">Passenger</div>
+  </div>
+
+  <p class="desc">Sign up as a rider to request motorcycle rides</p>
+
+  <!-- FORM -->
+  <form class="form">
+
+    <div class="row">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" id="reg_name" placeholder="John Doe" autocomplete="name">
+      </div>
+
+      <div class="input-group">
+        <label>Phone Number</label>
+        <input type="text" id="reg_contact" placeholder="+1 234 567 8900" autocomplete="tel">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>GCash Number</label>
+      <input type="text" id="reg_gcash" placeholder="09XXXXXXXXX" autocomplete="tel">
+    </div>
+
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" id="reg_username" placeholder="your username" autocomplete="username">
+    </div>
+
+    <div class="row">
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="reg_password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input type="password" id="reg_truepassword" placeholder="••••••••" autocomplete="new-password">
+      </div>
+    </div>
+
+    <button type="button" onclick="registerRider()" class="submit-btn">Create Account</button>
+
+    <p id="response"></p>
+
+  </form>
+
+  <p class="login">Already have an account? <a href="Riderlogin.html">Sign in</a></p>
+
+</div>
+<script src="javafolder/riderRegistration.js"></script>
+
+</body>
+
+</html>

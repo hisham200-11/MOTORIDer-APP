@@ -1,0 +1,188 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY + BACKGROUND */
+body {
+  min-height: 100vh;
+  font-family: 'Zen Dots', sans-serif;
+  color: whitesmoke;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(120deg, #0b0033, #110827, #310c3a, #1d0505);
+  background-size: 400% 400%;
+  animation: gradientMove 50s ease infinite;
+
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* GRADIENT ANIMATION */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* STARS */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+
+  background: url("https://www.transparenttextures.com/patterns/stardust.png");
+  opacity: 0.5;
+
+  animation: starsMove 100s linear infinite;
+
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes starsMove {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-500px, -500px); }
+}
+
+/* GLOW EFFECT */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at 20% 30%, rgba(168,85,247,0.2), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(217,70,239,0.2), transparent 40%);
+
+  z-index: -1;
+}
+
+/* CARD */
+.card {
+  width: 500px;
+  padding: 30px;
+  border-radius: 16px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+
+  color: white;
+}
+
+/* TEXT */
+.card h2 {
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.desc {
+  font-size: 13px;
+  opacity: 0.7;
+  margin: 15px 0;
+}
+
+/* TOGGLE */
+.toggle {
+  display: flex;
+  background: rgba(255,255,255,0.1);
+  border-radius: 25px;
+  padding: 5px;
+  margin: 15px 0;
+}
+
+.toggle-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-btn.active {
+  background: linear-gradient(90deg, #a855f7, #d946ef);
+}
+
+/* FORM */
+.form {
+  margin-top: 15px;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.Vehi-Info {
+  margin-bottom: 20px;  /* Adds vertical space below h3 to separate from Vehicle Type row */
+}z
+
+.input-group input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+/* BUTTON */
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+
+  background: linear-gradient(90deg, #a855f7, #d946ef);
+  color: white;
+  font-weight: bold;
+
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
+
+/* LOGIN TEXT */
+.login {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 12px;
+}
+
+.login a {
+  color: #d946ef;
+  text-decoration: none;
+}

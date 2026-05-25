@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Register</title>
+    <link rel="stylesheet" href="Driverregister.css">
+    <link href='https://fonts.googleapis.com/css?family=Zen Dots' rel='stylesheet'>
+</head>
+<body>
+<div class="card">
+
+  <h2>Create Account</h2>
+  <p class="subtitle">Choose your account type and fill in your details</p>
+
+  <div class="toggle">
+    <div class="toggle-btn active">Driver</div>
+  </div>
+
+  <p class="desc">Sign up as a Driver to accept motorcycle rides</p>
+
+  <form class="form">
+
+    <div class="row">
+      <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" id="driver_name" placeholder="John Doe">
+      </div>
+      <div class="input-group">
+        <label>Phone Number</label>
+        <input type="text" id="driver_contact" placeholder="09XXXXXXXXX"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" id="driver_username" placeholder="your username" autocomplete="username">
+    </div>
+
+    <div class="row">
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="driver_password" placeholder="••••••••" autocomplete="new-password">
+      </div>
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input type="password" id="driver_truepassword" placeholder="••••••••" autocomplete="new-password">
+      </div>
+    </div>
+
+    <h3 class="Vehi-Info">Vehicle Information</h3>
+
+    <div class="row">
+      <div class="input-group">
+        <label>Vehicle Type</label>
+        <input type="text" id="driver_brand" placeholder="e.g., Motorcycle">
+      </div>
+      <div class="input-group">
+        <label>Vehicle Model</label>
+        <input type="text" id="driver_model" placeholder="e.g., Honda Beat">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Vehicle Color</label>
+      <input type="text" id="driver_color" placeholder="Black">
+    </div>
+
+    <div class="input-group">
+      <label>License Plate</label>
+      <input type="text" id="driver_plate" placeholder="e.g., ABC-1234">
+    </div>
+
+    <h3 class="Vehi-Info">Driver Verification</h3>
+
+    <div class="row">
+      <div class="input-group">
+        <label>Driver License Number</label>
+        <input type="text" id="driver_license" placeholder="Enter license number">
+      </div>
+      <div class="input-group">
+        <label>License Expiry</label>
+        <input type="date" id="license_expiry">
+      </div>
+    </div>
+
+    <h3 class="Vehi-Info">Payment Details</h3>
+
+    <div class="input-group">
+      <label>GCash Number</label>
+      <input type="text" id="gcash" placeholder="09XXXXXXXXX"
+      oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+    </div>
+
+    <button type="button" onclick="registerDriver()" class="submit-btn">Create Account</button>
+    <p id="response"></p>
+
+  </form>
+
+  <p class="login">Already have an account? <a href="Driverlogin.html">Sign in</a></p>
+
+</div>
+<script src="javafolder/riderRegistration.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Rider.css">
+    <link href='https://fonts.googleapis.com/css?family=Zen Dots' rel='stylesheet'>
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <img src="https://marketplace.canva.com/NYWV4/MAGkH4NYWV4/1/tl/canva-sport-icon-MAGkH4NYWV4.png" class="logo" />
+      <h1>Welcome Back Passenger!</h1>
+      <p>Sign in to your MotoRide account</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="card">
+      <h2>Sign In</h2>
+      <p class="subtext">Enter your credentials to continue</p>
+
+      <div class="input-group">
+        <label>Username</label>
+        <div class="input-box">
+          <span class="icon">👤</span>
+          <input type="text" id="username">
+        </div>
+        </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <div class="input-box">
+          <span class="icon">🔒</span>
+          <input type="password" id="password">
+        </div>
+      </div>
+
+      <button class="btn" onclick="login('rider')">Sign In</button>
+
+      <p id="response"></p>
+
+      <p class="signup">
+        Don't have an account? <a href="Riderregister.html">Sign up</a>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Demo: Use any username and password to sign in, or create a new account
+    </div>
+
+  </div>
+
+<script src="javafolder/authentication.js"></script>
+</body>
