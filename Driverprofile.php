@@ -114,6 +114,25 @@ $driver = $stmt->get_result()->fetch_assoc();
     </div>
   </div>
 
+  <!-- GCASH BALANCE -->
+  <div class="card">
+    <h3>GCash Earnings</h3>
+    <p class="subtitle">Balance received from GCash rides</p>
+
+    <div class="gcash-balance-display">
+      <span class="balance-label">Current Balance</span>
+      <span class="balance-amount" id="driverGcashBalance">
+        ₱<?php echo number_format(floatval($driver['gcash_balance'] ?? 0), 2); ?>
+      </span>
+    </div>
+
+    <button class="btn" id="cashOutBtn"
+      <?php if (floatval($driver['gcash_balance'] ?? 0) <= 0) echo 'disabled'; ?>>
+      Cash Out
+    </button>
+    <p id="cashOutStatus" class="status"></p>
+  </div>
+
   <!-- SAVE -->
   <div class="card">
     <button class="btn" onclick="updateDriver()">Save Changes</button>

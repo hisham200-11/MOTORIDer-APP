@@ -164,3 +164,41 @@ function topUpGcash() {
         showError(status, error);
     });
 }
+
+// =======================
+// DRIVER GCASH CASH OUT
+// =======================
+const cashOutBtn = document.getElementById('cashOutBtn');
+if (cashOutBtn) {
+    cashOutBtn.addEventListener('click', function() {
+        const status = document.getElementById('cashOutStatus');
+        const btn = this;
+
+        btn.disabled = true;
+        btn.textContent = 'Processing...';
+
+        fetch('cashOutGcash.php', { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('driverGcashBalance').textContent = '₱0.00';
+                    status.style.display = 'block';
+                    status.className = 'status success';
+                    status.innerText = '✅ Cash out successful!';
+                    btn.disabled = true;
+                    btn.textContent = 'Cash Out';
+                } else {
+                    status.style.display = 'block';
+                    status.className = 'status error';
+                    status.innerText = '❌ ' + (data.error || 'Cash out failed.');
+                    btn.disabled = false;
+                    btn.textContent = 'Cash Out';
+                }
+            })
+            .catch(err => {
+                showError(status, err);
+                btn.disabled = false;
+                btn.textContent = 'Cash Out';
+            });
+    });
+}
