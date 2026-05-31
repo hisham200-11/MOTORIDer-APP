@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
             toggle.checked = false;
             onlineContent.style.display = "none";
             offlineContent.style.display = "block";
+            // Clear map route when going offline
+            clearMapRoute();
+            stopLocationTracking();
         }
     }
 
@@ -110,6 +113,7 @@ function attachRideButtons() {
                 .then(res => res.json()) // 👈 changed from res.text() to res.json()
                 .then(data => {
                     if(data.status === "success") {
+                        clearMapRoute(); // Clear route when ride ends
                         showReceipt(data); // 👈 show receipt instead of refreshDashboard
                     } else {
                         alert("Error completing ride.");
@@ -124,11 +128,7 @@ function attachAcceptDeclineEvents() {
     document.querySelectorAll(".accept-btn").forEach(btn => {
         btn.onclick = function() {
             const rideId = this.dataset.id;
-            fetch("updateRideStatus.php", {
-                method: "POST",
-                headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                body: `id=${rideId}&status=accepted`
-            }).then(() => refreshDashboard());
+            acceptRideWithMap(rideId);
         };
     });
 

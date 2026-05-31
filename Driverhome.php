@@ -20,11 +20,16 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MotoRide Dashboard</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Leaflet Map Library -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <link rel="stylesheet" href="Driverhome.css">
 </head>
@@ -80,6 +85,12 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
                     </div>
             </div>
 
+            <div class="map-card" id="mapSection" style="margin-top: 20px;">
+                <h3>Live Location & Route</h3>
+                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Your location is automatically tracked. Tap accept on a ride to see pickup & dropoff routes.</p>
+                <div id="driverMap" class="driver-map-display"></div>
+            </div>
+
         </div> <div id="offlineContent" style="display:none;">
             <div class="card offline" style="text-align: center; padding: 50px;">
                 <i class="fa-regular fa-user" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
@@ -106,6 +117,7 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
     </div>
 
     <script src="javafolder/driverDashboard.js"></script>
+    <script src="javafolder/driverMap.js"></script>
 
 </body>
 </html>
