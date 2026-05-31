@@ -312,6 +312,25 @@ document.addEventListener('DOMContentLoaded', function() {
     setupAutocomplete('pickup');
     setupAutocomplete('dropoff');
 
+    document.getElementById('paymentMethod').addEventListener('change', function() {
+      const existing = document.getElementById('gcashBalanceInfo');
+      if (existing) existing.remove();
+
+      if (this.value === 'GCash') {
+          fetch('getGcashBalance.php')
+              .then(res => res.json())
+              .then(data => {
+                  const balance = parseFloat(data.balance ?? 0);
+                  const balanceEl = document.createElement('p');
+                  balanceEl.id = 'gcashBalanceInfo';
+                  balanceEl.style.cssText = 'margin: 6px 0 0 0; font-size: 13px; color: #0070ba; font-weight: bold;';
+                  balanceEl.textContent = `GCash Balance: ₱${balance.toFixed(2)}`;
+                  this.parentElement.appendChild(balanceEl);
+              })
+              .catch(() => {});
+      }
+  });
+
     // ============================================
     // CLICK-TO-PIN FUNCTIONALITY
     // ============================================
@@ -533,60 +552,103 @@ document.addEventListener('DOMContentLoaded', function() {
     // FIND AVAILABLE DRIVERS
     // ============================================
     window.calculateFare = function() {
-      const pickup = document.getElementById('pickup').value.trim();
-      const dropoff = document.getElementById('dropoff').value.trim();
-      const paymentMethod = document.getElementById('paymentMethod').value;
-      
-      if (!pickup || !dropoff) {
+    const pickup = document.getElementById('pickup').value.trim();
+    const dropoff = document.getElementById('dropoff').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
+
+    if (!pickup || !dropoff) {
         alert('Please set both pickup and dropoff locations on the map.');
         return;
-      }
-      
-      if (!paymentMethod) {
+    }
+
+    if (!paymentMethod) {
         alert('Please select a payment method.');
         return;
-      }
-      
-      if (!pickupMarker || !dropoffMarker || !currentRouteMeta) {
+    }
+
+    if (!pickupMarker || !dropoffMarker || !currentRouteMeta) {
         alert('Please complete the route calculation first.');
         return;
-      }
-      
-      const driverList = document.getElementById('driverList');
-      driverList.innerHTML = '<p style="text-align:center; color:#666;">Loading available drivers...</p>';
-      
-      fetch('getavailabledrivers.php')
-        .then(res => res.json())
-        .then(drivers => {
-          if (drivers.length === 0) {
-            driverList.innerHTML = '<p style="color:#ef4444; text-align:center;">No drivers available right now. Please try again later.</p>';
-            return;
-          }
-          
-          driverList.innerHTML = '';
-          drivers.forEach(driver => {
-            const driverCard = document.createElement('div');
-            driverCard.className = 'driver-card';
-            driverCard.innerHTML = `
-              <div class="driver-info">
-                <h4>${driver.name}</h4>
-                <p>${driver.brand} ${driver.model}</p>
-                <p style="color: #9333ea; font-size: 12px;">${driver.color}</p>
-              </div>
-              <button class="accept-btn" onclick="selectDriver('${driver.driver_id}', '${driver.name}')">Accept</button>
-            `;
-            driverList.appendChild(driverCard);
-          });
-          
-          const driversPanel = document.getElementById('driversPanel');
-          driversPanel.classList.remove('hidden');
-          driversPanel.classList.add('show');
-        })
-        .catch(err => {
-          console.error('Error fetching drivers:', err);
-          driverList.innerHTML = '<p style="color:#ef4444;">Failed to load drivers. Please try again.</p>';
-        });
-    };
+    }
+
+    // GCash balance check before showing drivers
+    if (paymentMethod === 'GCash') {
+        const fare = calculateFareAmount(currentRouteMeta.distance);
+
+        fetch('getGcashBalance.php')
+            .then(res => res.json())
+            .then(data => {
+                const balance = parseFloat(data.balance ?? 0);
+                if (balance < fare) {
+                    document.getElementById('rideStatus').innerHTML = `
+                        <div style="border: 3px solid #ef4444; border-radius: 8px; padding: 15px; background: #fef2f2;">
+                            <p style="margin: 0 0 8px 0; font-size: 15px; color: #ef4444; font-weight: bold;">
+                                ⚠️ Insufficient GCash Balance
+                            </p>
+                            <p style="margin: 0 0 4px 0; font-size: 13px; color: #555;">
+                                Your balance: <strong>₱${balance.toFixed(2)}</strong>
+                            </p>
+                            <p style="margin: 0 0 12px 0; font-size: 13px; color: #555;">
+                                Required fare: <strong>₱${fare.toFixed(2)}</strong>
+                            </p>
+                            <p style="margin: 0; font-size: 13px; color: #555;">
+                                Please switch to <strong>Cash</strong> or 
+                                <a href="Riderprofile.php" style="color: #0070ba; font-weight: bold;">Top Up your GCash</a>.
+                            </p>
+                        </div>
+                    `;
+                    return;
+                }
+                // Balance sufficient — load drivers
+                loadDrivers();
+            })
+            .catch(() => {
+                document.getElementById('rideStatus').innerHTML =
+                    '<p style="color: #ef4444;">Could not verify GCash balance. Please try again.</p>';
+            });
+        return;
+    }
+
+    // Cash — go straight to drivers
+    loadDrivers();
+};
+
+    function loadDrivers() {
+        const driverList = document.getElementById('driverList');
+        driverList.innerHTML = '<p style="text-align:center; color:#666;">Loading available drivers...</p>';
+
+        fetch('getavailabledrivers.php')
+            .then(res => res.json())
+            .then(drivers => {
+                if (drivers.length === 0) {
+                    driverList.innerHTML = '<p style="color:#ef4444; text-align:center;">No drivers available right now. Please try again later.</p>';
+                    return;
+                }
+
+                driverList.innerHTML = '';
+                drivers.forEach(driver => {
+                    const driverCard = document.createElement('div');
+                    driverCard.className = 'driver-card';
+                    driverCard.innerHTML = `
+                        <div class="driver-info">
+                            <h4>${driver.name}</h4>
+                            <p>${driver.brand} ${driver.model}</p>
+                            <p style="color: #9333ea; font-size: 12px;">${driver.color}</p>
+                        </div>
+                        <button class="accept-btn" onclick="selectDriver('${driver.driver_id}', '${driver.name}')">Accept</button>
+                    `;
+                    driverList.appendChild(driverCard);
+                });
+
+                const driversPanel = document.getElementById('driversPanel');
+                driversPanel.classList.remove('hidden');
+                driversPanel.classList.add('show');
+            })
+            .catch(err => {
+                console.error('Error fetching drivers:', err);
+                driverList.innerHTML = '<p style="color:#ef4444;">Failed to load drivers. Please try again.</p>';
+            });
+    }
 
     // ============================================
     // SELECT DRIVER & SUBMIT RIDE
@@ -597,41 +659,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const paymentMethod = document.getElementById('paymentMethod').value;
         const distance = currentRouteMeta.distance;
         const fare = calculateFareAmount(distance);
-
-        if (paymentMethod === 'GCash') {
-            fetch('getGcashBalance.php')
-                .then(res => res.json())
-                .then(data => {
-                    const balance = parseFloat(data.balance ?? 0);
-                    if (balance < fare) {
-                        document.getElementById('rideStatus').innerHTML = `
-                            <div style="border: 3px solid #ef4444; border-radius: 8px; padding: 15px; background: #fef2f2;">
-                                <p style="margin: 0 0 8px 0; font-size: 15px; color: #ef4444; font-weight: bold;">
-                                    ⚠️ Insufficient GCash Balance
-                                </p>
-                                <p style="margin: 0 0 4px 0; font-size: 13px; color: #555;">
-                                    Your balance: <strong>₱${balance.toFixed(2)}</strong>
-                                </p>
-                                <p style="margin: 0 0 12px 0; font-size: 13px; color: #555;">
-                                    Required fare: <strong>₱${fare.toFixed(2)}</strong>
-                                </p>
-                                <p style="margin: 0; font-size: 13px; color: #555;">
-                                    Please switch to <strong>Cash</strong> or 
-                                    <a href="Riderprofile.php" style="color: #0070ba; font-weight: bold;">Top Up your GCash</a>.
-                                </p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare);
-                })
-                .catch(err => {
-                    console.error('Balance check error:', err);
-                    document.getElementById('rideStatus').innerHTML =
-                        '<p style="color: #ef4444;">Could not verify GCash balance. Please try again.</p>';
-                });
-            return;
-        }
 
         // Cash — go straight to booking
         submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare);
