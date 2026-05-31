@@ -120,3 +120,47 @@ if (contactInput) {
     });
 }
 
+// =======================
+// GCASH TOP-UP
+// =======================
+function topUpGcash() {
+    const amountInput = document.getElementById("topupAmount");
+    const status = document.getElementById("topupStatus");
+    const amount = parseFloat(amountInput.value);
+
+    if (!amount || amount <= 0) {
+        status.style.display = "block";
+        status.className = "status error";
+        status.innerText = "❌ Please enter a valid amount.";
+        return;
+    }
+
+    const params = new URLSearchParams();
+    params.append("amount", amount);
+
+    fetch("topupGcash.php", {
+        method: "POST",
+        body: params
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            status.style.display = "block";
+            status.className = "status success";
+            status.innerText = "✅ Balance updated successfully!";
+
+            // Update the displayed balance without reload
+            document.getElementById("gcashBalanceDisplay").textContent =
+                "₱" + parseFloat(data.new_balance).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            amountInput.value = "";
+        } else {
+            status.style.display = "block";
+            status.className = "status error";
+            status.innerText = "❌ " + (data.error || "Top-up failed.");
+        }
+    })
+    .catch(error => {
+        showError(status, error);
+    });
+}

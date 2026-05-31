@@ -34,7 +34,8 @@ if ($role === 'rider') {
         $_SESSION['contact_no'] = $row['contact_no']; // Store contact number in session
         $_SESSION['name'] = $row['name']; // Store name in session
         $_SESSION['username'] = $username; // Store username in session
-        $_SESSION['gcash'] = $row['gcash']; // Store gcash in session
+        $_SESSION['gcash'] = $row['gcash']; // Store gcash in session\
+        $_SESSION['gcash_balance'] = $row['gcash_balance']; // Store gcash balance in session
     
         echo "Login successful!";
         // OPTIONAL: session_start(); then store user data

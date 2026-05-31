@@ -592,56 +592,94 @@ document.addEventListener('DOMContentLoaded', function() {
     // SELECT DRIVER & SUBMIT RIDE
     // ============================================
     window.selectDriver = function(driverId, driverName) {
-      const pickup = document.getElementById('pickup').value.trim();
-      const dropoff = document.getElementById('dropoff').value.trim();
-      const paymentMethod = document.getElementById('paymentMethod').value;
-      const distance = currentRouteMeta.distance;
-      const fare = calculateFareAmount(distance);
-      
-      const requestBody = {
-        pickup: pickup,
-        dropoff: dropoff,
-        distance: distance,
-        fare: fare,
-        payment_method: paymentMethod
-      };
-      
-      fetch('submitRide.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      })
+        const pickup = document.getElementById('pickup').value.trim();
+        const dropoff = document.getElementById('dropoff').value.trim();
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const distance = currentRouteMeta.distance;
+        const fare = calculateFareAmount(distance);
+
+        if (paymentMethod === 'GCash') {
+            fetch('getGcashBalance.php')
+                .then(res => res.json())
+                .then(data => {
+                    const balance = parseFloat(data.balance ?? 0);
+                    if (balance < fare) {
+                        document.getElementById('rideStatus').innerHTML = `
+                            <div style="border: 3px solid #ef4444; border-radius: 8px; padding: 15px; background: #fef2f2;">
+                                <p style="margin: 0 0 8px 0; font-size: 15px; color: #ef4444; font-weight: bold;">
+                                    ⚠️ Insufficient GCash Balance
+                                </p>
+                                <p style="margin: 0 0 4px 0; font-size: 13px; color: #555;">
+                                    Your balance: <strong>₱${balance.toFixed(2)}</strong>
+                                </p>
+                                <p style="margin: 0 0 12px 0; font-size: 13px; color: #555;">
+                                    Required fare: <strong>₱${fare.toFixed(2)}</strong>
+                                </p>
+                                <p style="margin: 0; font-size: 13px; color: #555;">
+                                    Please switch to <strong>Cash</strong> or 
+                                    <a href="Riderprofile.php" style="color: #0070ba; font-weight: bold;">Top Up your GCash</a>.
+                                </p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare);
+                })
+                .catch(err => {
+                    console.error('Balance check error:', err);
+                    document.getElementById('rideStatus').innerHTML =
+                        '<p style="color: #ef4444;">Could not verify GCash balance. Please try again.</p>';
+                });
+            return;
+        }
+
+        // Cash — go straight to booking
+        submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare);
+    };
+
+    // ← submitRideRequest is now OUTSIDE selectDriver, at the same level
+    function submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare) {
+        const requestBody = {
+            pickup, dropoff, distance, fare, payment_method: paymentMethod
+        };
+
+        fetch('submitRide.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        })
         .then(res => res.json())
         .then(data => {
-          if (data.success) {
-            document.getElementById('driversPanel').classList.add('hidden');
-            document.getElementById('driversPanel').classList.remove('show');
-            
-            const rideStatus = document.getElementById('rideStatus');
-            rideStatus.innerHTML = `
-              <div style="border: 3px solid #10b981; border-radius: 8px; padding: 15px; background: #f0fdf4;">
-                <h3 style="margin: 0 0 10px 0; color: #10b981;">Booking Confirmed!</h3>
-                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Driver:</strong> ${driverName}</p>
-                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Pickup:</strong> ${pickup}</p>
-                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Dropoff:</strong> ${dropoff}</p>
-                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Fare:</strong> ₱${fare.toFixed(2)}</p>
-                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Payment:</strong> ${paymentMethod}</p>
-                <p style="margin: 10px 0 0 0; font-size: 13px; color: #9333ea; font-weight: bold;">Waiting for driver to accept...</p>
-              </div>
-            `;
-            
-            isRideActive = true;
-            hideBookingForm();
-            startRidePolling();
-          } else {
-            document.getElementById('rideStatus').innerHTML = `<p style="color: #ef4444;">${data.error || 'Failed to book ride. Please try again.'}</p>`;
-          }
+            if (data.success) {
+                document.getElementById('driversPanel').classList.add('hidden');
+                document.getElementById('driversPanel').classList.remove('show');
+
+                document.getElementById('rideStatus').innerHTML = `
+                    <div style="border: 3px solid #10b981; border-radius: 8px; padding: 15px; background: #f0fdf4;">
+                        <h3 style="margin: 0 0 10px 0; color: #10b981;">Booking Confirmed!</h3>
+                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Driver:</strong> ${driverName}</p>
+                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Pickup:</strong> ${pickup}</p>
+                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Dropoff:</strong> ${dropoff}</p>
+                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Fare:</strong> ₱${fare.toFixed(2)}</p>
+                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Payment:</strong> ${paymentMethod}</p>
+                        <p style="margin: 10px 0 0 0; font-size: 13px; color: #9333ea; font-weight: bold;">Waiting for driver to accept...</p>
+                    </div>
+                `;
+
+                isRideActive = true;
+                hideBookingForm();
+                startRidePolling();
+            } else {
+                document.getElementById('rideStatus').innerHTML =
+                    `<p style="color: #ef4444;">${data.error || 'Failed to book ride. Please try again.'}</p>`;
+            }
         })
         .catch(err => {
-          console.error('Error submitting ride:', err);
-          document.getElementById('rideStatus').innerHTML = '<p style="color: #ef4444;">Error processing your booking. Please try again.</p>';
+            console.error('Error submitting ride:', err);
+            document.getElementById('rideStatus').innerHTML =
+                '<p style="color: #ef4444;">Error processing your booking. Please try again.</p>';
         });
-    };
+    }
 
     // ============================================
     // RIDE STATUS POLLING WITH SESSION PERSISTENCE
@@ -682,22 +720,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // DISMISS RECEIPT FUNCTION (Called from checkRideStatus.php button)
     // ============================================
     window.dismissReceipt = function() {
-      if (typeof pollInterval !== 'undefined') clearInterval(pollInterval);
-      pollInterval = null;
-      document.getElementById('rideStatus').innerHTML = '';
-      document.getElementById('rideStatus').style.border = 'none';
-      document.getElementById('rideStatus').style.padding = '0';
-      document.getElementById('driversPanel').classList.add('hidden');
-      document.getElementById('driversPanel').classList.remove('show');
-      const bookingCard = document.querySelector('.booking-card');
-      if (bookingCard) bookingCard.style.display = 'block';
-      const inputs = document.querySelectorAll('#pickup, #dropoff, #paymentMethod');
-      inputs.forEach(el => el.disabled = false);
-      if (typeof window.restoreBookingForm === 'function') window.restoreBookingForm();
-    };
+    // Get the ride ID from the hidden span in the receipt
+    const rideIdEl = document.getElementById('completedRideId');
+    const rideId = rideIdEl ? rideIdEl.textContent.trim() : null;
 
-    window.addEventListener('beforeunload', () => {
-      if (pollInterval) clearInterval(pollInterval);
-    });
+    if (rideId) {
+        const params = new URLSearchParams();
+        params.append('ride_id', rideId);
+
+        fetch('dismissRide.php', {
+            method: 'POST',
+            body: params
+        }).catch(err => console.error('Dismiss error:', err));
+    }
+
+    // Clear UI as before
+    if (typeof pollInterval !== 'undefined') clearInterval(pollInterval);
+    pollInterval = null;
+    document.getElementById('rideStatus').innerHTML = '';
+    document.getElementById('rideStatus').style.border = 'none';
+    document.getElementById('rideStatus').style.padding = '0';
+    document.getElementById('driversPanel').classList.add('hidden');
+    document.getElementById('driversPanel').classList.remove('show');
+    const bookingCard = document.querySelector('.booking-card');
+    if (bookingCard) bookingCard.style.display = 'block';
+    const inputs = document.querySelectorAll('#pickup, #dropoff, #paymentMethod');
+    inputs.forEach(el => el.disabled = false);
+    if (typeof window.restoreBookingForm === 'function') window.restoreBookingForm();
+    };
 
 }); // End DOMContentLoaded
