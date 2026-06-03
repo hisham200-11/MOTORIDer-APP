@@ -598,9 +598,26 @@ document.addEventListener('DOMContentLoaded', function() {
       const distance = currentRouteMeta.distance;
       const fare = calculateFareAmount(distance);
       
+      // Get coordinates from map markers
+      let pickupLat = null, pickupLng = null, dropoffLat = null, dropoffLng = null;
+      if (pickupMarker) {
+        const pickupLatLng = pickupMarker.getLatLng();
+        pickupLat = pickupLatLng.lat;
+        pickupLng = pickupLatLng.lng;
+      }
+      if (dropoffMarker) {
+        const dropoffLatLng = dropoffMarker.getLatLng();
+        dropoffLat = dropoffLatLng.lat;
+        dropoffLng = dropoffLatLng.lng;
+      }
+      
       const requestBody = {
         pickup: pickup,
         dropoff: dropoff,
+        pickup_lat: pickupLat,
+        pickup_lng: pickupLng,
+        dropoff_lat: dropoffLat,
+        dropoff_lng: dropoffLng,
         distance: distance,
         fare: fare,
         payment_method: paymentMethod
@@ -699,5 +716,92 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('beforeunload', () => {
       if (pollInterval) clearInterval(pollInterval);
     });
+
+    // ============================================
+    // LOCATE USER FUNCTION
+    // ============================================
+    window.locateUser = function() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser. Please use a modern browser and enable location services.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
+          // Update user location
+          userLocation = { lat, lng };
+          
+          // Zoom and center map to user location
+          map.setView([lat, lng], 16);
+          
+          // If pickup marker doesn't exist, place one at current location
+          if (!pickupMarker) {
+            pickupMarker = L.marker([lat, lng], {
+              icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+              })
+            }).addTo(map).bindPopup('Your Current Location');
+            
+            // Reverse geocode to get address
+            reverseGeocodeNominatim(lat, lng).then(address => {
+              document.getElementById('pickup').value = address;
+            });
+            
+            clickCounter = Math.max(clickCounter, 1);
+          }
+          
+          // Show success notification
+          const notification = document.createElement('div');
+          notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+          `;
+          notification.textContent = '✓ Location found! Map centered on your position.';
+          document.body.appendChild(notification);
+          
+          // Remove notification after 3 seconds
+          setTimeout(() => {
+            notification.remove();
+          }, 3000);
+        },
+        function(error) {
+          let errorMessage = 'Unable to find your location. ';
+          
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage += 'Please enable location services in your device settings. Go to Settings > Privacy > Location and allow this app to access your location.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage += 'Location information is currently unavailable. Please try again in a moment.';
+              break;
+            case error.TIMEOUT:
+              errorMessage += 'Location request timed out. Please try again.';
+              break;
+            default:
+              errorMessage += 'Please turn on location services and try again.';
+          }
+          
+          alert(errorMessage);
+          console.error('Geolocation error:', error);
+        }
+      );
+    };
 
 }); // End DOMContentLoaded

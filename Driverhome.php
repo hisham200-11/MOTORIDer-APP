@@ -47,58 +47,60 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
         </div>
     </div>
 
-    <div class="container">
+    <div class="main-wrapper">
+        <!-- LEFT PANEL: INFO -->
+        <div class="info-panel">
+            <div class="card">
+                <h2>Driver Status</h2>
+                <p>Toggle your availability to receive ride requests</p>
 
-        <div class="card">
-            <h2>Driver Status</h2>
-            <p>Toggle your availability to receive ride requests</p>
-
-            <div class="status-header">
-                <span id="statusText"><?php echo $driver_status; ?></span>
-                <input type="checkbox" id="statusToggle" <?php echo $checked; ?>>
-            </div>
-        </div>
-
-        <div id="onlineContent">
-            
-            <div class="stats">
-                <div class="stat-box">
-                    <h2 id="totalRidesDisplay" style="color:#9333ea;">--</h2>
-                    <p>Total rides</p>
-                </div>
-                <div class="stat-box">
-                    <h2 id="totalEarningsDisplay" style="color:#16a34a;">₱--</h2>
-                    <p>Total earnings</p>
+                <div class="status-header">
+                    <span id="statusText"><?php echo $driver_status; ?></span>
+                    <input type="checkbox" id="statusToggle" <?php echo $checked; ?>>
                 </div>
             </div>
 
-            <div class="card" id="activeRideSection">
-                <h3>Active Ride</h3>
-                <div id="activeRide">
-                    <?php include "getActiveRides.php"; ?>
-                </div>
-            </div>
-
-            <div class="card" id="pendingRequestsSection" style="display:none; margin-top: 20px;">
-                <h3>Incoming Requests</h3>
-                <div id="rideRequests">
+            <div id="onlineContent">
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <h2 id="totalRidesDisplay" style="color:#9333ea;">--</h2>
+                        <p>Total rides</p>
                     </div>
+                    <div class="stat-box">
+                        <h2 id="totalEarningsDisplay" style="color:#16a34a;">₱--</h2>
+                        <p>Total earnings</p>
+                    </div>
+                </div>
+
+                <div class="card" id="activeRideSection">
+                    <h3>Active Ride</h3>
+                    <div id="activeRide">
+                        <?php include "getActiveRides.php"; ?>
+                    </div>
+                </div>
+
+                <div class="card" id="pendingRequestsSection" style="display:none; margin-top: 20px;">
+                    <h3>Incoming Requests</h3>
+                    <div id="rideRequests">
+                        </div>
+                </div>
+
             </div>
 
-            <div class="map-card" id="mapSection" style="margin-top: 20px;">
-                <h3>Live Location & Route</h3>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Your location is automatically tracked. Tap accept on a ride to see pickup & dropoff routes.</p>
-                <div id="driverMap" class="driver-map-display"></div>
-            </div>
-
-        </div> <div id="offlineContent" style="display:none;">
-            <div class="card offline" style="text-align: center; padding: 50px;">
-                <i class="fa-regular fa-user" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
-                <h2>You're Offline</h2>
-                <p>Toggle the switch above to go online and start receiving ride requests.</p>
+            <div id="offlineContent" style="display:none;">
+                <div class="card offline" style="text-align: center; padding: 50px;">
+                    <i class="fa-regular fa-user" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                    <h2>You're Offline</h2>
+                    <p>Toggle the switch above to go online and start receiving ride requests.</p>
+                </div>
             </div>
         </div>
 
+        <!-- RIGHT PANEL: MAP -->
+        <div class="map-panel">
+            <div id="map"></div>
+        </div>
     </div> <div class="bottom-nav">
         <div class="nav-item active">
             <i class="fa-solid fa-house"></i>
@@ -117,7 +119,6 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
     </div>
 
     <script src="javafolder/driverDashboard.js"></script>
-    <script src="javafolder/driverMap.js"></script>
 
 </body>
 </html>

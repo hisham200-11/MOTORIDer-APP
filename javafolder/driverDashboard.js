@@ -1,3 +1,25 @@
+// ============================================
+// LEAFLET MAP INITIALIZATION
+// ============================================
+let map = null;
+let pickupMarker = null;
+let dropoffMarker = null;
+
+// Initialize map when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Leaflet map
+    map = L.map('map').setView([14.5995, 120.9842], 13);
+    
+    // Add OpenStreetMap tile layer
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 19
+    }).addTo(map);
+});
+
+// ============================================
+// STATUS TOGGLE
+// ============================================
 document.addEventListener("DOMContentLoaded", function () {
     const toggle = document.getElementById("statusToggle");
     const statusText = document.getElementById("statusText");
@@ -15,13 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
             toggle.checked = false;
             onlineContent.style.display = "none";
             offlineContent.style.display = "block";
-            // Clear map route when going offline
             clearMapRoute();
-            stopLocationTracking();
         }
     }
 
-    // Read initial state from PHP instead of fetching getstatus.php
     updateUI(toggle.checked);
 
     toggle.addEventListener("change", function() {
@@ -62,7 +81,34 @@ function loadActiveRide() {
     .then(html => {
         document.getElementById("activeRide").innerHTML = html;
         attachRideButtons(); 
-        togglePendingSection(); 
+        togglePendingSection();
+        
+        // Update map with ride coordinates from hidden inputs
+        const activeRideElement = document.querySelector('.active-ride');
+        if (activeRideElement) {
+            const pickupLatInput = activeRideElement.querySelector('.ride-pickup-lat');
+            const pickupLngInput = activeRideElement.querySelector('.ride-pickup-lng');
+            const dropoffLatInput = activeRideElement.querySelector('.ride-dropoff-lat');
+            const dropoffLngInput = activeRideElement.querySelector('.ride-dropoff-lng');
+            
+            if (pickupLatInput && pickupLngInput && dropoffLatInput && dropoffLngInput) {
+                const pickupLat = parseFloat(pickupLatInput.value);
+                const pickupLng = parseFloat(pickupLngInput.value);
+                const dropoffLat = parseFloat(dropoffLatInput.value);
+                const dropoffLng = parseFloat(dropoffLngInput.value);
+                
+                // Only display if coordinates are valid
+                if (pickupLat && pickupLng && dropoffLat && dropoffLng) {
+                    displayRideOnMap(pickupLat, pickupLng, dropoffLat, dropoffLng);
+                } else {
+                    clearMapRoute();
+                }
+            } else {
+                clearMapRoute();
+            }
+        } else {
+            clearMapRoute();
+        }
     });
 }
 
@@ -128,7 +174,11 @@ function attachAcceptDeclineEvents() {
     document.querySelectorAll(".accept-btn").forEach(btn => {
         btn.onclick = function() {
             const rideId = this.dataset.id;
-            acceptRideWithMap(rideId);
+            fetch("updateRideStatus.php", {
+                method: "POST",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                body: `id=${rideId}&status=accepted`
+            }).then(() => refreshDashboard());
         };
     });
 
@@ -144,9 +194,79 @@ function attachAcceptDeclineEvents() {
     });
 }
 
-// Auto-refresh interval
-setInterval(refreshDashboard, 3000);
-refreshDashboard();
+// ============================================
+// MAP DISPLAY WITH COORDINATES
+// ============================================
+let routeLine = null;
+
+function displayRideOnMap(pickupLat, pickupLng, dropoffLat, dropoffLng) {
+    // Clear old markers and route
+    if (pickupMarker) map.removeLayer(pickupMarker);
+    if (dropoffMarker) map.removeLayer(dropoffMarker);
+    if (routeLine) map.removeLayer(routeLine);
+    
+    // Add pickup marker (green)
+    pickupMarker = L.marker([pickupLat, pickupLng], {
+        icon: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        })
+    }).addTo(map).bindPopup('Pickup Location');
+    
+    // Add dropoff marker (red)
+    dropoffMarker = L.marker([dropoffLat, dropoffLng], {
+        icon: L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        })
+    }).addTo(map).bindPopup('Dropoff Location');
+    
+    // Fetch route from OSRM
+    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${pickupLng},${pickupLat};${dropoffLng},${dropoffLat}?overview=full&geometries=geojson`;
+    
+    fetch(osrmUrl)
+        .then(res => res.json())
+        .then(data => {
+            if (data.routes && data.routes[0]) {
+                const coordinates = data.routes[0].geometry.coordinates;
+                // Draw route line (blue polyline)
+                routeLine = L.polyline(
+                    coordinates.map(coord => [coord[1], coord[0]]),
+                    { color: '#3b82f6', weight: 5, opacity: 0.7 }
+                ).addTo(map);
+            }
+        })
+        .catch(err => console.error('OSRM routing error:', err));
+    
+    // Fit map to both markers
+    const bounds = L.latLngBounds([[pickupLat, pickupLng], [dropoffLat, dropoffLng]]);
+    map.fitBounds(bounds, { padding: [50, 50] });
+}
+
+function clearMapRoute() {
+    if (pickupMarker) {
+        map.removeLayer(pickupMarker);
+        pickupMarker = null;
+    }
+    if (dropoffMarker) {
+        map.removeLayer(dropoffMarker);
+        dropoffMarker = null;
+    }
+    if (routeLine) {
+        map.removeLayer(routeLine);
+        routeLine = null;
+    }
+}
+
+// ============================================
 
 // RECEIPT MODAL
 function showReceipt(data) {
@@ -220,3 +340,9 @@ function showReceipt(data) {
 
     document.body.appendChild(modal);
 }
+
+// ============================================
+// AUTO-REFRESH EVERY 3 SECONDS
+// ============================================
+setInterval(refreshDashboard, 3000);
+refreshDashboard();
