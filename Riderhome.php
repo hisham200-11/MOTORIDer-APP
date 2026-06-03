@@ -70,6 +70,10 @@ if (!isset($_SESSION['customer_id'])) {
           <i class="fa-solid fa-redo"></i> Clear & Reset
         </button>
 
+        <button class="btn-locate" onclick="locateUser()">
+          <i class="fa-solid fa-location-dot"></i> Find My Location
+        </button>
+
         <button class="btn" onclick="calculateFare()">Find Available Drivers</button>
       </div>
 

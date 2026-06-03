@@ -33,13 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtDriver->bind_param("di", $driver_earnings, $driverId);
         $stmtDriver->execute();
 
-        if ($rideData['payment_method'] === 'GCash') {
-            $stmtGcash = $conn->prepare("UPDATE driver_tbl SET gcash_balance = gcash_balance + ? WHERE driver_id = ?");
-            $stmtGcash->bind_param("di", $driver_earnings, $driverId);
-            $stmtGcash->execute();
-            $stmtGcash->close();
-        }
-
         $conn->commit();
 
         echo json_encode([

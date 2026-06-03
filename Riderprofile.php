@@ -68,26 +68,6 @@ if (!isset($_SESSION['customer_id'])) {
       <p id="status" class="status"></p>
     </div>
 
-    <div class="card">
-      <h3>GCash Balance</h3>
-      <p class="subtitle">Manage your in-app GCash wallet</p>
-
-    <div class="gcash-balance-display">
-      <span class="balance-label">Current Balance</span>
-      <span class="balance-amount" id="gcashBalanceDisplay">
-        ₱<?php echo number_format(floatval($_SESSION['gcash_balance'] ?? 0), 2); ?>
-      </span>
-    </div>
-
-    <div class="input-group">
-      <label>Top-Up Amount (₱)</label>
-      <input type="number" id="topupAmount" placeholder="Enter amount" min="1" step="0.01">
-    </div>
-
-    <button class="btn" onclick="topUpGcash()">Add Money</button>
-    <p id="topupStatus" class="status"></p>
-  </div>
-
   </div>
 
   <!-- BOTTOM NAV  -->

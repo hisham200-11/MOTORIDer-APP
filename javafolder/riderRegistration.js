@@ -312,25 +312,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupAutocomplete('pickup');
     setupAutocomplete('dropoff');
 
-    document.getElementById('paymentMethod').addEventListener('change', function() {
-      const existing = document.getElementById('gcashBalanceInfo');
-      if (existing) existing.remove();
-
-      if (this.value === 'GCash') {
-          fetch('getGcashBalance.php')
-              .then(res => res.json())
-              .then(data => {
-                  const balance = parseFloat(data.balance ?? 0);
-                  const balanceEl = document.createElement('p');
-                  balanceEl.id = 'gcashBalanceInfo';
-                  balanceEl.style.cssText = 'margin: 6px 0 0 0; font-size: 13px; color: #0070ba; font-weight: bold;';
-                  balanceEl.textContent = `GCash Balance: ₱${balance.toFixed(2)}`;
-                  this.parentElement.appendChild(balanceEl);
-              })
-              .catch(() => {});
-      }
-  });
-
     // ============================================
     // CLICK-TO-PIN FUNCTIONALITY
     // ============================================
@@ -552,161 +533,132 @@ document.addEventListener('DOMContentLoaded', function() {
     // FIND AVAILABLE DRIVERS
     // ============================================
     window.calculateFare = function() {
-    const pickup = document.getElementById('pickup').value.trim();
-    const dropoff = document.getElementById('dropoff').value.trim();
-    const paymentMethod = document.getElementById('paymentMethod').value;
-
-    if (!pickup || !dropoff) {
+      const pickup = document.getElementById('pickup').value.trim();
+      const dropoff = document.getElementById('dropoff').value.trim();
+      const paymentMethod = document.getElementById('paymentMethod').value;
+      
+      if (!pickup || !dropoff) {
         alert('Please set both pickup and dropoff locations on the map.');
         return;
-    }
-
-    if (!paymentMethod) {
+      }
+      
+      if (!paymentMethod) {
         alert('Please select a payment method.');
         return;
-    }
-
-    if (!pickupMarker || !dropoffMarker || !currentRouteMeta) {
+      }
+      
+      if (!pickupMarker || !dropoffMarker || !currentRouteMeta) {
         alert('Please complete the route calculation first.');
         return;
-    }
-
-    // GCash balance check before showing drivers
-    if (paymentMethod === 'GCash') {
-        const fare = calculateFareAmount(currentRouteMeta.distance);
-
-        fetch('getGcashBalance.php')
-            .then(res => res.json())
-            .then(data => {
-                const balance = parseFloat(data.balance ?? 0);
-                if (balance < fare) {
-                    document.getElementById('rideStatus').innerHTML = `
-                        <div style="border: 3px solid #ef4444; border-radius: 8px; padding: 15px; background: #fef2f2;">
-                            <p style="margin: 0 0 8px 0; font-size: 15px; color: #ef4444; font-weight: bold;">
-                                ⚠️ Insufficient GCash Balance
-                            </p>
-                            <p style="margin: 0 0 4px 0; font-size: 13px; color: #555;">
-                                Your balance: <strong>₱${balance.toFixed(2)}</strong>
-                            </p>
-                            <p style="margin: 0 0 12px 0; font-size: 13px; color: #555;">
-                                Required fare: <strong>₱${fare.toFixed(2)}</strong>
-                            </p>
-                            <p style="margin: 0; font-size: 13px; color: #555;">
-                                Please switch to <strong>Cash</strong> or 
-                                <a href="Riderprofile.php" style="color: #0070ba; font-weight: bold;">Top Up your GCash</a>.
-                            </p>
-                        </div>
-                    `;
-                    return;
-                }
-                // Balance sufficient — load drivers
-                loadDrivers();
-            })
-            .catch(() => {
-                document.getElementById('rideStatus').innerHTML =
-                    '<p style="color: #ef4444;">Could not verify GCash balance. Please try again.</p>';
-            });
-        return;
-    }
-
-    // Cash — go straight to drivers
-    loadDrivers();
-};
-
-    function loadDrivers() {
-        const driverList = document.getElementById('driverList');
-        driverList.innerHTML = '<p style="text-align:center; color:#666;">Loading available drivers...</p>';
-
-        fetch('getavailabledrivers.php')
-            .then(res => res.json())
-            .then(drivers => {
-                if (drivers.length === 0) {
-                    driverList.innerHTML = '<p style="color:#ef4444; text-align:center;">No drivers available right now. Please try again later.</p>';
-                    return;
-                }
-
-                driverList.innerHTML = '';
-                drivers.forEach(driver => {
-                    const driverCard = document.createElement('div');
-                    driverCard.className = 'driver-card';
-                    driverCard.innerHTML = `
-                        <div class="driver-info">
-                            <h4>${driver.name}</h4>
-                            <p>${driver.brand} ${driver.model}</p>
-                            <p style="color: #9333ea; font-size: 12px;">${driver.color}</p>
-                        </div>
-                        <button class="accept-btn" onclick="selectDriver('${driver.driver_id}', '${driver.name}')">Accept</button>
-                    `;
-                    driverList.appendChild(driverCard);
-                });
-
-                const driversPanel = document.getElementById('driversPanel');
-                driversPanel.classList.remove('hidden');
-                driversPanel.classList.add('show');
-            })
-            .catch(err => {
-                console.error('Error fetching drivers:', err);
-                driverList.innerHTML = '<p style="color:#ef4444;">Failed to load drivers. Please try again.</p>';
-            });
-    }
+      }
+      
+      const driverList = document.getElementById('driverList');
+      driverList.innerHTML = '<p style="text-align:center; color:#666;">Loading available drivers...</p>';
+      
+      fetch('getavailabledrivers.php')
+        .then(res => res.json())
+        .then(drivers => {
+          if (drivers.length === 0) {
+            driverList.innerHTML = '<p style="color:#ef4444; text-align:center;">No drivers available right now. Please try again later.</p>';
+            return;
+          }
+          
+          driverList.innerHTML = '';
+          drivers.forEach(driver => {
+            const driverCard = document.createElement('div');
+            driverCard.className = 'driver-card';
+            driverCard.innerHTML = `
+              <div class="driver-info">
+                <h4>${driver.name}</h4>
+                <p>${driver.brand} ${driver.model}</p>
+                <p style="color: #9333ea; font-size: 12px;">${driver.color}</p>
+              </div>
+              <button class="accept-btn" onclick="selectDriver('${driver.driver_id}', '${driver.name}')">Accept</button>
+            `;
+            driverList.appendChild(driverCard);
+          });
+          
+          const driversPanel = document.getElementById('driversPanel');
+          driversPanel.classList.remove('hidden');
+          driversPanel.classList.add('show');
+        })
+        .catch(err => {
+          console.error('Error fetching drivers:', err);
+          driverList.innerHTML = '<p style="color:#ef4444;">Failed to load drivers. Please try again.</p>';
+        });
+    };
 
     // ============================================
     // SELECT DRIVER & SUBMIT RIDE
     // ============================================
     window.selectDriver = function(driverId, driverName) {
-        const pickup = document.getElementById('pickup').value.trim();
-        const dropoff = document.getElementById('dropoff').value.trim();
-        const paymentMethod = document.getElementById('paymentMethod').value;
-        const distance = currentRouteMeta.distance;
-        const fare = calculateFareAmount(distance);
-
-        // Cash — go straight to booking
-        submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare);
-    };
-
-    // ← submitRideRequest is now OUTSIDE selectDriver, at the same level
-    function submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare) {
-        const requestBody = {
-            pickup, dropoff, distance, fare, payment_method: paymentMethod
-        };
-
-        fetch('submitRide.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody)
-        })
+      const pickup = document.getElementById('pickup').value.trim();
+      const dropoff = document.getElementById('dropoff').value.trim();
+      const paymentMethod = document.getElementById('paymentMethod').value;
+      const distance = currentRouteMeta.distance;
+      const fare = calculateFareAmount(distance);
+      
+      // Get coordinates from map markers
+      let pickupLat = null, pickupLng = null, dropoffLat = null, dropoffLng = null;
+      if (pickupMarker) {
+        const pickupLatLng = pickupMarker.getLatLng();
+        pickupLat = pickupLatLng.lat;
+        pickupLng = pickupLatLng.lng;
+      }
+      if (dropoffMarker) {
+        const dropoffLatLng = dropoffMarker.getLatLng();
+        dropoffLat = dropoffLatLng.lat;
+        dropoffLng = dropoffLatLng.lng;
+      }
+      
+      const requestBody = {
+        pickup: pickup,
+        dropoff: dropoff,
+        pickup_lat: pickupLat,
+        pickup_lng: pickupLng,
+        dropoff_lat: dropoffLat,
+        dropoff_lng: dropoffLng,
+        distance: distance,
+        fare: fare,
+        payment_method: paymentMethod
+      };
+      
+      fetch('submitRide.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      })
         .then(res => res.json())
         .then(data => {
-            if (data.success) {
-                document.getElementById('driversPanel').classList.add('hidden');
-                document.getElementById('driversPanel').classList.remove('show');
-
-                document.getElementById('rideStatus').innerHTML = `
-                    <div style="border: 3px solid #10b981; border-radius: 8px; padding: 15px; background: #f0fdf4;">
-                        <h3 style="margin: 0 0 10px 0; color: #10b981;">Booking Confirmed!</h3>
-                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Driver:</strong> ${driverName}</p>
-                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Pickup:</strong> ${pickup}</p>
-                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Dropoff:</strong> ${dropoff}</p>
-                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Fare:</strong> ₱${fare.toFixed(2)}</p>
-                        <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Payment:</strong> ${paymentMethod}</p>
-                        <p style="margin: 10px 0 0 0; font-size: 13px; color: #9333ea; font-weight: bold;">Waiting for driver to accept...</p>
-                    </div>
-                `;
-
-                isRideActive = true;
-                hideBookingForm();
-                startRidePolling();
-            } else {
-                document.getElementById('rideStatus').innerHTML =
-                    `<p style="color: #ef4444;">${data.error || 'Failed to book ride. Please try again.'}</p>`;
-            }
+          if (data.success) {
+            document.getElementById('driversPanel').classList.add('hidden');
+            document.getElementById('driversPanel').classList.remove('show');
+            
+            const rideStatus = document.getElementById('rideStatus');
+            rideStatus.innerHTML = `
+              <div style="border: 3px solid #10b981; border-radius: 8px; padding: 15px; background: #f0fdf4;">
+                <h3 style="margin: 0 0 10px 0; color: #10b981;">Booking Confirmed!</h3>
+                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Driver:</strong> ${driverName}</p>
+                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Pickup:</strong> ${pickup}</p>
+                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Dropoff:</strong> ${dropoff}</p>
+                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Fare:</strong> ₱${fare.toFixed(2)}</p>
+                <p style="margin: 5px 0; font-size: 13px; color: #555;"><strong>Payment:</strong> ${paymentMethod}</p>
+                <p style="margin: 10px 0 0 0; font-size: 13px; color: #9333ea; font-weight: bold;">Waiting for driver to accept...</p>
+              </div>
+            `;
+            
+            isRideActive = true;
+            hideBookingForm();
+            startRidePolling();
+          } else {
+            document.getElementById('rideStatus').innerHTML = `<p style="color: #ef4444;">${data.error || 'Failed to book ride. Please try again.'}</p>`;
+          }
         })
         .catch(err => {
-            console.error('Error submitting ride:', err);
-            document.getElementById('rideStatus').innerHTML =
-                '<p style="color: #ef4444;">Error processing your booking. Please try again.</p>';
+          console.error('Error submitting ride:', err);
+          document.getElementById('rideStatus').innerHTML = '<p style="color: #ef4444;">Error processing your booking. Please try again.</p>';
         });
-    }
+    };
 
     // ============================================
     // RIDE STATUS POLLING WITH SESSION PERSISTENCE
@@ -747,33 +699,109 @@ document.addEventListener('DOMContentLoaded', function() {
     // DISMISS RECEIPT FUNCTION (Called from checkRideStatus.php button)
     // ============================================
     window.dismissReceipt = function() {
-    // Get the ride ID from the hidden span in the receipt
-    const rideIdEl = document.getElementById('completedRideId');
-    const rideId = rideIdEl ? rideIdEl.textContent.trim() : null;
+      if (typeof pollInterval !== 'undefined') clearInterval(pollInterval);
+      pollInterval = null;
+      document.getElementById('rideStatus').innerHTML = '';
+      document.getElementById('rideStatus').style.border = 'none';
+      document.getElementById('rideStatus').style.padding = '0';
+      document.getElementById('driversPanel').classList.add('hidden');
+      document.getElementById('driversPanel').classList.remove('show');
+      const bookingCard = document.querySelector('.booking-card');
+      if (bookingCard) bookingCard.style.display = 'block';
+      const inputs = document.querySelectorAll('#pickup, #dropoff, #paymentMethod');
+      inputs.forEach(el => el.disabled = false);
+      if (typeof window.restoreBookingForm === 'function') window.restoreBookingForm();
+    };
 
-    if (rideId) {
-        const params = new URLSearchParams();
-        params.append('ride_id', rideId);
+    window.addEventListener('beforeunload', () => {
+      if (pollInterval) clearInterval(pollInterval);
+    });
 
-        fetch('dismissRide.php', {
-            method: 'POST',
-            body: params
-        }).catch(err => console.error('Dismiss error:', err));
-    }
+    // ============================================
+    // LOCATE USER FUNCTION
+    // ============================================
+    window.locateUser = function() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser. Please use a modern browser and enable location services.');
+        return;
+      }
 
-    // Clear UI as before
-    if (typeof pollInterval !== 'undefined') clearInterval(pollInterval);
-    pollInterval = null;
-    document.getElementById('rideStatus').innerHTML = '';
-    document.getElementById('rideStatus').style.border = 'none';
-    document.getElementById('rideStatus').style.padding = '0';
-    document.getElementById('driversPanel').classList.add('hidden');
-    document.getElementById('driversPanel').classList.remove('show');
-    const bookingCard = document.querySelector('.booking-card');
-    if (bookingCard) bookingCard.style.display = 'block';
-    const inputs = document.querySelectorAll('#pickup, #dropoff, #paymentMethod');
-    inputs.forEach(el => el.disabled = false);
-    if (typeof window.restoreBookingForm === 'function') window.restoreBookingForm();
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
+          // Update user location
+          userLocation = { lat, lng };
+          
+          // Zoom and center map to user location
+          map.setView([lat, lng], 16);
+          
+          // If pickup marker doesn't exist, place one at current location
+          if (!pickupMarker) {
+            pickupMarker = L.marker([lat, lng], {
+              icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+              })
+            }).addTo(map).bindPopup('Your Current Location');
+            
+            // Reverse geocode to get address
+            reverseGeocodeNominatim(lat, lng).then(address => {
+              document.getElementById('pickup').value = address;
+            });
+            
+            clickCounter = Math.max(clickCounter, 1);
+          }
+          
+          // Show success notification
+          const notification = document.createElement('div');
+          notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+          `;
+          notification.textContent = '✓ Location found! Map centered on your position.';
+          document.body.appendChild(notification);
+          
+          // Remove notification after 3 seconds
+          setTimeout(() => {
+            notification.remove();
+          }, 3000);
+        },
+        function(error) {
+          let errorMessage = 'Unable to find your location. ';
+          
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage += 'Please enable location services in your device settings. Go to Settings > Privacy > Location and allow this app to access your location.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage += 'Location information is currently unavailable. Please try again in a moment.';
+              break;
+            case error.TIMEOUT:
+              errorMessage += 'Location request timed out. Please try again.';
+              break;
+            default:
+              errorMessage += 'Please turn on location services and try again.';
+          }
+          
+          alert(errorMessage);
+          console.error('Geolocation error:', error);
+        }
+      );
     };
 
 }); // End DOMContentLoaded

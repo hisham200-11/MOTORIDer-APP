@@ -50,6 +50,12 @@ if ($stmt) {
             <p><strong>Pickup:</strong> <?php echo htmlspecialchars($ride['pickup']); ?></p>
             <p><strong>Dropoff:</strong> <?php echo htmlspecialchars($ride['dropoff']); ?></p>
             <p><strong>Payment:</strong> <?php echo htmlspecialchars($ride['payment_method']); ?></p>
+            
+            <!-- Hidden inputs for map coordinates -->
+            <input type='hidden' class='ride-pickup-lat' value='<?php echo htmlspecialchars($ride['pickup_lat'] ?? ''); ?>'>
+            <input type='hidden' class='ride-pickup-lng' value='<?php echo htmlspecialchars($ride['pickup_lng'] ?? ''); ?>'>
+            <input type='hidden' class='ride-dropoff-lat' value='<?php echo htmlspecialchars($ride['dropoff_lat'] ?? ''); ?>'>
+            <input type='hidden' class='ride-dropoff-lng' value='<?php echo htmlspecialchars($ride['dropoff_lng'] ?? ''); ?>'>
 
             <?php if ($ride['status'] == 'accepted'): ?>
                 <button class='btn start-btn' data-id='<?php echo $ride['id']; ?>'>🚀 Start Ride</button>
