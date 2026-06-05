@@ -14,12 +14,11 @@ if (!$rider_name) {
     exit;
 }
 
-$stmt = $conn->prepare("
-    SELECT rr.*, d.name AS driver_name, d.brand, d.model, d.color, 
+$stmt = $conn->prepare("SELECT rr.*, d.name AS driver_name, d.brand, d.model, d.color, 
            d.plate_no, d.contact_no AS driver_contact, d.gcash AS driver_gcash
     FROM ride_requests rr
     LEFT JOIN driver_tbl d ON rr.driver_id = d.driver_id
-    WHERE rr.rider_name = ? AND (
+    WHERE rr.rider_name = ? AND rr.passenger_dismissed = 0 AND (
         rr.status IN ('pending','accepted','started')
         OR (rr.status = 'completed' AND rr.end_time > DATE_SUB(NOW(), INTERVAL 5 MINUTE))
     )
@@ -111,6 +110,26 @@ if ($ride['status'] === 'pending') {
     </div>";
 
 } elseif ($ride['status'] === 'completed') {
+
+if ($ride['payment_method'] === 'GCash' && !$ride['gcash_deducted']) {
+        $customer_id = $_SESSION['customer_id'];
+        $fare = $ride['price'];
+
+        $deduct = $conn->prepare("UPDATE customer_tbl SET gcash_balance = gcash_balance - ? WHERE customer_id = ?");
+        $deduct->bind_param("di", $fare, $customer_id);
+        $deduct->execute();
+        $deduct->close();
+
+        // Mark the ride as deducted so it doesn't run again on next poll
+        $flag = $conn->prepare("UPDATE ride_requests SET gcash_deducted = 1 WHERE id = ?");
+        $flag->bind_param("i", $ride['id']);
+        $flag->execute();
+        $flag->close();
+
+        // Update session
+        $_SESSION['gcash_balance'] = ($_SESSION['gcash_balance'] ?? 0) - $fare;
+    }
+    
     echo "
     <div style='padding: 10px;'>
         <span id='completedRideId' style='display:none;'>{$ride['id']}</span>
