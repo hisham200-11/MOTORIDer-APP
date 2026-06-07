@@ -182,6 +182,7 @@ ALTER TABLE `driver_tbl`
 --
 -- AUTO_INCREMENT for table `ride_requests`
 --
+ALTER TABLE customer_tbl ADD COLUMN wallet_balance DECIMAL(10,2) NOT NULL DEFAULT 0.00;
 ALTER TABLE `ride_requests`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
