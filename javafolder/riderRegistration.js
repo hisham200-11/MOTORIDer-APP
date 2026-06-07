@@ -502,7 +502,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (userLocation) {
         map.setView([userLocation.lat, userLocation.lng], 15);
       } else {
-        map.setView([12.8797, 121.7740], 6);
+        // FIX: Fallback to Manila instead of the Philippines
+      map.setView([14.5995, 120.9842], 13);
       }
     };
 
@@ -544,7 +545,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (userLocation) {
         map.setView([userLocation.lat, userLocation.lng], 15);
       } else {
-        map.setView([12.8797, 121.7740], 6);
+        // FIX: Fallback to Manila instead of the Philippines
+        map.setView([14.5995, 120.9842], 13);
       }
     };
 
@@ -784,5 +786,59 @@ document.addEventListener('DOMContentLoaded', function() {
     inputs.forEach(el => el.disabled = false);
     if (typeof window.restoreBookingForm === 'function') window.restoreBookingForm();
     };
+// ============================================
+// FIND MY LOCATION BUTTON LOGIC
+// ============================================
+window.locateUser = function() {
+        if ("geolocation" in navigator) {
+            // Show loading animation on the button
+            const btn = document.querySelector('.btn-locate');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Locating...';
 
-}); // End DOMContentLoaded
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    userLocation = L.latLng(lat, lng); // Update saved location
+                    
+                    // 1. Zoom tightly to the user
+                    map.setView(userLocation, 16);
+
+                    // 2. Clear old pickup pin and drop a new GREEN pin
+                    if (pickupMarker) map.removeLayer(pickupMarker);
+                    pickupMarker = L.marker([lat, lng], {
+                        icon: L.icon({ 
+                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', 
+                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', 
+                            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] 
+                        })
+                    }).addTo(map).bindPopup('Your Pickup Location');
+
+                    // 3. Convert GPS to text address and fill the input box
+                    reverseGeocodeNominatim(lat, lng).then(address => {
+                        document.getElementById('pickup').value = address;
+                    });
+
+                    // 4. Update click counter so the next click on map is for Dropoff
+                    clickCounter = Math.max(clickCounter, 1);
+                    
+                    // Restore button text
+                    btn.innerHTML = originalText;
+                },
+                (error) => {
+                    console.warn("Geolocation failed.", error);
+                    alert("Could not get your exact location. Please ensure location permissions are enabled in your browser.");
+                    // Default to Manila if they deny permission
+                    map.setView([14.5995, 120.9842], 13);
+                    btn.innerHTML = originalText;
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    };
+}
+
+); // End DOMContentLoaded

@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    $stmt->bind_param("ssdddddiss", $rider_name, $pickup, $dropoff, $pickup_lat, $pickup_lng, $dropoff_lat, $dropoff_lng, $distance, $fare, $payment_method);
+    $stmt->bind_param("sssdddddds", $rider_name, $pickup, $dropoff, $pickup_lat, $pickup_lng, $dropoff_lat, $dropoff_lng, $distance, $fare, $payment_method);
     
     if ($stmt->execute()) {
         echo json_encode(["success" => true, "message" => "Ride booked successfully"]);
