@@ -2,10 +2,14 @@
   <html lang="en">
   <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
-      <link rel="stylesheet" href="welcome.css">
-      <link href='https://fonts.googleapis.com/css?family=Zen Dots' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoRide</title>
+    <link rel="stylesheet" href="welcome.css">
+    <link href='https://fonts.googleapis.com/css?family=Zen Dots' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Bootstrap 5 (for accordion/tabs inside modal) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
   <body>
@@ -49,6 +53,539 @@
   <div class="dbox"><p><strong>Safe & Secure</strong><br> All drivers are verified and rated. Safety gear provided for every ride.</p></div>
   <div class="dbox"><p><strong>premium Fleet</strong><br> Choose from sport bikes, cruisers, and more. All bikes are well-maintained.</p></div>
   </section>
+
+<!-- ═══════════════════════════════════════
+     FLOATING HELP BUTTON
+═══════════════════════════════════════ -->
+<button class="help-fab" onclick="openHelp()" aria-label="Open Help">
+    ?
+    <span class="fab-tooltip">Help Center</span>
+</button>
+ 
+ 
+<!-- ═══════════════════════════════════════
+     HELP MODAL
+═══════════════════════════════════════ -->
+<div class="help-overlay" id="helpOverlay" onclick="overlayClick(event)">
+    <div class="help-panel">
+ 
+        <!-- Header -->
+        <div class="hp-header">
+            <div class="hp-header-left">
+                <h2><i class="fa-solid fa-circle-question me-2"></i>MotoRide Help Center</h2>
+                <p>Everything you need to get started and ride safely.</p>
+            </div>
+            <button class="hp-close" onclick="closeHelp()" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+ 
+        <!-- Tab Bar -->
+        <div class="hp-tabs" id="helpTabs">
+            <button class="hp-tab active" onclick="switchTab('getting-started', this)">
+                <i class="fa-solid fa-rocket"></i> Getting Started
+            </button>
+            <button class="hp-tab" onclick="switchTab('rider-guide', this)">
+                <i class="fa-solid fa-user"></i> Passenger Guide
+            </button>
+            <button class="hp-tab" onclick="switchTab('driver-guide', this)">
+                <i class="fa-solid fa-motorcycle"></i> Driver Guide
+            </button>
+            <button class="hp-tab" onclick="switchTab('payments', this)">
+                <i class="fa-solid fa-peso-sign"></i> Fares &amp; Payment
+            </button>
+            <button class="hp-tab" onclick="switchTab('faq', this)">
+                <i class="fa-solid fa-comments"></i> FAQ
+            </button>
+            <button class="hp-tab" onclick="switchTab('tips', this)">
+                <i class="fa-solid fa-lightbulb"></i> Tips
+            </button>
+            <button class="hp-tab" onclick="switchTab('support', this)">
+                <i class="fa-solid fa-headset"></i> Support
+            </button>
+        </div>
+ 
+        <!-- Scrollable Body -->
+        <div class="hp-body">
+ 
+            <!-- ── GETTING STARTED ── -->
+            <div class="hp-pane active" id="pane-getting-started">
+                <div class="info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div>MotoRide is a motorcycle ride-hailing platform. Choose your role below to see how to get started.</div>
+                </div>
+ 
+                <div class="role-split">
+                    <!-- Passenger -->
+                    <div class="role-col">
+                        <div class="role-col-title" style="color:var(--green);">
+                            <i class="fa-solid fa-user"></i> Passenger
+                        </div>
+                        <ol class="step-list">
+                            <li>
+                                <div class="step-num">1</div>
+                                <div class="step-content">
+                                    <strong>Click "Passenger" on this screen</strong>
+                                    <p>Takes you to the Passenger login page.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="step-num">2</div>
+                                <div class="step-content">
+                                    <strong>Click "Sign up" if new</strong>
+                                    <p>Fill in name, phone, GCash number, username, and password.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="step-num">3</div>
+                                <div class="step-content">
+                                    <strong>Log in and book a ride</strong>
+                                    <p>Enter username &amp; password → Sign In → you're on your dashboard.</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <!-- Driver -->
+                    <div class="role-col">
+                        <div class="role-col-title" style="color:var(--brand);">
+                            <i class="fa-solid fa-motorcycle"></i> Driver
+                        </div>
+                        <ol class="step-list">
+                            <li>
+                                <div class="step-num">1</div>
+                                <div class="step-content">
+                                    <strong>Click "Driver" on this screen</strong>
+                                    <p>Takes you to the Driver login page.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="step-num">2</div>
+                                <div class="step-content">
+                                    <strong>Click "Sign up" if new</strong>
+                                    <p>Fill in personal info, vehicle details, driver license, and GCash number.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="step-num">3</div>
+                                <div class="step-content">
+                                    <strong>Log in and go online</strong>
+                                    <p>Enter credentials → Sign In → toggle status to Online to start accepting rides.</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+ 
+                <div class="warn-box mt-2 mb-0">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>Phone numbers must be <strong>numbers only</strong> — no dashes or spaces. Duplicate usernames or phone numbers are not allowed.</div>
+                </div>
+            </div>
+ 
+            <!-- ── PASSENGER GUIDE ── -->
+            <div class="hp-pane" id="pane-rider-guide">
+                <div class="sub-label">Booking a Ride — Step by Step</div>
+                <ol class="step-list">
+                    <li>
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <strong>Set Pickup Location</strong>
+                            <p>The map auto-detects your GPS location. You can also click on the map (first click = green pickup pin) or type in the Pickup box.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <strong>Set Dropoff Location</strong>
+                            <p>Second map click = red dropoff pin. Or type in the Dropoff box. The route and estimated fare appear automatically.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <strong>Choose Payment Method</strong>
+                            <p>Select <strong>Cash</strong> or <strong>GCash</strong>. With GCash, your wallet balance is shown. If balance &lt; fare, top up first or switch to Cash.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <strong>Click "Find Available Drivers"</strong>
+                            <p>A list of online drivers appears with their name, vehicle brand, model, and color.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">5</div>
+                        <div class="step-content">
+                            <strong>Click "Accept" on a Driver</strong>
+                            <p>Ride is submitted as Pending. Once the driver confirms, status changes to "Driver is on the way!"</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">6</div>
+                        <div class="step-content">
+                            <strong>Ride In Progress → Completed</strong>
+                            <p>When the driver starts the trip, status shows "Ride in Progress 🚀". When done, a full receipt appears — click <strong>Done</strong> to close it.</p>
+                        </div>
+                    </li>
+                </ol>
+                <div class="info-box mb-0">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <div>Use <strong>Clear &amp; Reset</strong> to start over, or <strong>Find My Location</strong> to re-center the map on your GPS position.</div>
+                </div>
+            </div>
+ 
+            <!-- ── DRIVER GUIDE ── -->
+            <div class="hp-pane" id="pane-driver-guide">
+                <div class="sub-label">Going Online &amp; Accepting Rides</div>
+                <ol class="step-list">
+                    <li>
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <strong>Toggle Your Status to Online</strong>
+                            <p>On your dashboard, flip the toggle switch. You'll now appear in the available drivers list for passengers.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <strong>Accept an Incoming Request</strong>
+                            <p>Requests appear in "Incoming Requests" showing passenger name, pickup/dropoff, distance, fare, and payment method. Click <strong>Accept Ride</strong> or <strong>Decline</strong>.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <strong>Start the Ride</strong>
+                            <p>After picking up the passenger, click <strong>🚀 Start Ride</strong>. This timestamps the trip start.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <strong>Complete the Ride</strong>
+                            <p>At the destination, click <strong>✅ Complete Ride</strong> → confirm. A receipt shows gross fare, 12% platform fee, and your net earnings.</p>
+                        </div>
+                    </li>
+                </ol>
+                <div class="info-box mb-0">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <div>Your <strong>Total Rides</strong> and <strong>Total Earnings</strong> update in real time on the dashboard. Full per-ride breakdowns are in the <strong>History</strong> tab.</div>
+                </div>
+            </div>
+ 
+            <!-- ── FARES & PAYMENT ── -->
+            <div class="hp-pane" id="pane-payments">
+                <div class="sub-label">How Fares Are Calculated</div>
+                <table class="fare-tbl">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Value</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Base Fare</td><td><strong>₱40</strong></td><td>Covers first 2 km</td></tr>
+                        <tr><td>Additional Rate</td><td><strong>₱10 / km</strong></td><td>Every km beyond 2 km</td></tr>
+                        <tr><td>Platform Fee</td><td><strong>12%</strong></td><td>Deducted from driver earnings only</td></tr>
+                        <tr><td>Driver Earnings</td><td><strong>88% of fare</strong></td><td>Net amount after platform fee</td></tr>
+                    </tbody>
+                </table>
+                <div class="info-box">
+                    <i class="fa-solid fa-calculator"></i>
+                    <div><strong>Example:</strong> 6 km ride = ₱40 + (4 × ₱10) = <strong>₱80 fare</strong>. Driver earns ₱80 × 88% = <strong>₱70.40</strong>.</div>
+                </div>
+ 
+                <div class="sub-label">Payment Methods</div>
+                <div class="role-split">
+                    <div class="role-col">
+                        <div class="role-col-title"><i class="fa-solid fa-money-bill" style="color:var(--green)"></i> Cash</div>
+                        <p style="font-size:12px; color:var(--muted); margin:0;">Hand the exact amount to the driver at the end of the ride. No app action needed from the passenger.</p>
+                    </div>
+                    <div class="role-col">
+                        <div class="role-col-title"><i class="fa-solid fa-mobile-screen" style="color:var(--brand)"></i> GCash Wallet</div>
+                        <p style="font-size:12px; color:var(--muted); margin:0;">Fare is automatically deducted from your in-app wallet when the driver completes the trip. Top up in your Profile page.</p>
+                    </div>
+                </div>
+ 
+                <div class="sub-label">Topping Up Your GCash Wallet</div>
+                <ol class="step-list">
+                    <li><div class="step-num">1</div><div class="step-content"><strong>Go to Profile → GCash Balance</strong><p>Your current balance shows in a blue card.</p></div></li>
+                    <li><div class="step-num">2</div><div class="step-content"><strong>Enter Amount → "Add Money"</strong><p>Balance updates instantly. No page refresh needed.</p></div></li>
+                </ol>
+                <div class="info-box mb-0">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div>The GCash wallet is a <strong>simulated in-app balance</strong> for demo purposes — it is not connected to your real GCash account.</div>
+                </div>
+            </div>
+ 
+            <!-- ── FAQ ── -->
+            <div class="hp-pane" id="pane-faq">
+                <div class="hp-search-wrap">
+                    <input type="text" id="faqSearch" placeholder="Search FAQ…" oninput="filterFAQ(this.value)">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div id="faqList">
+                    <div class="accordion" id="faqAcc">
+ 
+                        <div class="accordion-item faq-item" data-q="no drivers available offline">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f1">
+                                    <span class="rbadge rb-rider me-2"><i class="fa-solid fa-user"></i> Rider</span>
+                                    Why can't I find any available drivers?
+                                </button>
+                            </h2>
+                            <div id="f1" class="accordion-collapse collapse">
+                                <div class="accordion-body">Drivers only appear when they have toggled their status to <strong>Online</strong>. If the list is empty, all drivers are currently offline. Try again in a few minutes.</div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="pending stuck waiting">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">
+                                    <span class="rbadge rb-rider me-2"><i class="fa-solid fa-user"></i> Rider</span>
+                                    My ride is stuck on "Pending." What happened?
+                                </button>
+                            </h2>
+                            <div id="f2" class="accordion-collapse collapse">
+                                <div class="accordion-body">The status updates automatically every few seconds — no refresh needed. If it stays pending for a long time, the driver may have gone offline. Contact the driver directly or reach out to support.</div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="cancel ride cancellation">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">
+                                    <span class="rbadge rb-rider me-2"><i class="fa-solid fa-user"></i> Rider</span>
+                                    How do I cancel a ride?
+                                </button>
+                            </h2>
+                            <div id="f3" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="warn-box mb-0"><i class="fa-solid fa-triangle-exclamation"></i><div>In-app cancellation is not currently available from the passenger side. Contact the driver directly using the phone number shown in your ride status panel.</div></div>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="gcash balance not deducted payment">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">
+                                    <span class="rbadge rb-rider me-2"><i class="fa-solid fa-user"></i> Rider</span>
+                                    I paid by GCash but my balance wasn't deducted.
+                                </button>
+                            </h2>
+                            <div id="f4" class="accordion-collapse collapse">
+                                <div class="accordion-body">GCash deduction happens when the driver marks the ride as <strong>Completed</strong>. If the ride isn't completed yet, your balance won't change. Refresh the Profile page after the ride completes.</div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="earnings not updating counter stats">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f5">
+                                    <span class="rbadge rb-driver me-2"><i class="fa-solid fa-motorcycle"></i> Driver</span>
+                                    Why isn't my earnings counter updating?
+                                </button>
+                            </h2>
+                            <div id="f5" class="accordion-collapse collapse">
+                                <div class="accordion-body">Earnings refresh automatically every 3 seconds on the dashboard. They're updated when you click <strong>Complete Ride</strong> and confirm. Check the <strong>History</strong> tab for an accurate per-ride breakdown.</div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="platform fee earnings calculation percentage">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f6">
+                                    <span class="rbadge rb-driver me-2"><i class="fa-solid fa-motorcycle"></i> Driver</span>
+                                    How are my earnings calculated?
+                                </button>
+                            </h2>
+                            <div id="f6" class="accordion-collapse collapse">
+                                <div class="accordion-body">You earn <strong>88% of the gross fare</strong>. The platform retains 12% as a service fee. Every receipt after completing a ride shows: Gross Fare → Platform Fee (12%) → Your Earnings.</div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="offline pending requests hidden">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f7">
+                                    <span class="rbadge rb-driver me-2"><i class="fa-solid fa-motorcycle"></i> Driver</span>
+                                    Can I see ride requests while offline?
+                                </button>
+                            </h2>
+                            <div id="f7" class="accordion-collapse collapse">
+                                <div class="accordion-body">No. The Incoming Requests panel is only visible when you are <strong>Online</strong>. Toggle online to start seeing and accepting ride requests.</div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="map not loading blank location permission">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f8">
+                                    <span class="rbadge rb-both me-2"><i class="fa-solid fa-users"></i> Both</span>
+                                    The map isn't loading. What do I do?
+                                </button>
+                            </h2>
+                            <div id="f8" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <ol class="mb-0" style="font-size:12px;">
+                                        <li>Check your internet connection.</li>
+                                        <li>Allow location access when the browser prompts.</li>
+                                        <li>Refresh the page (F5 or pull-to-refresh).</li>
+                                        <li>Try Chrome if using another browser.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        <div class="accordion-item faq-item" data-q="two accounts rider driver both">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f9">
+                                    <span class="rbadge rb-both me-2"><i class="fa-solid fa-users"></i> Both</span>
+                                    Can I have both a Rider and Driver account?
+                                </button>
+                            </h2>
+                            <div id="f9" class="accordion-collapse collapse">
+                                <div class="accordion-body">Yes, but you must use a <strong>different username and phone number</strong> for each account. The system blocks duplicate usernames or contact numbers within the same role.</div>
+                            </div>
+                        </div>
+ 
+                    </div><!-- /accordion -->
+                    <div class="no-results" id="faqNoResults" style="display:none;">
+                        <i class="fa-solid fa-magnifying-glass mb-2" style="font-size:20px;"></i><br>No results found. Try different keywords.
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- ── TIPS ── -->
+            <div class="hp-pane" id="pane-tips">
+                <div class="sub-label" style="color:var(--green)"><i class="fa-solid fa-user me-1"></i> For Passengers</div>
+                <div class="tip-grid mb-4">
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-location-crosshairs"></i></div>
+                        <h6>Use "Find My Location"</h6>
+                        <p>Faster and more accurate than typing — tap the blue button for instant GPS pickup placement.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-wallet"></i></div>
+                        <h6>Top Up Before You Ride</h6>
+                        <p>Add GCash balance in your Profile before searching for drivers to avoid being blocked at checkout.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-eye"></i></div>
+                        <h6>Verify Driver Details</h6>
+                        <p>After acceptance, confirm the plate number and vehicle color before boarding. Safety first.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-clock"></i></div>
+                        <h6>No Need to Refresh</h6>
+                        <p>Ride status auto-updates every few seconds. Just wait on the page.</p>
+                    </div>
+                </div>
+ 
+                <div class="sub-label" style="color:var(--brand)"><i class="fa-solid fa-motorcycle me-1"></i> For Drivers</div>
+                <div class="tip-grid">
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-toggle-on"></i></div>
+                        <h6>Stay Online Consistently</h6>
+                        <p>Toggle on before arriving at your starting area — requests only show when you're online.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-play"></i></div>
+                        <h6>Always Press "Start Ride"</h6>
+                        <p>This timestamps the trip correctly. Skipping it makes your history inaccurate.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-mobile-screen"></i></div>
+                        <h6>GCash is Auto-Deducted</h6>
+                        <p>No need to collect GCash manually — it's deducted from the passenger automatically on completion.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="ti"><i class="fa-solid fa-chart-bar"></i></div>
+                        <h6>Check History Weekly</h6>
+                        <p>The History tab gives a full breakdown — gross fare, fee, and net earnings per ride.</p>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- ── SUPPORT ── -->
+            <div class="hp-pane" id="pane-support">
+                <div class="info-box">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div>For <strong>urgent ride issues</strong> (active ride stuck, safety concern), call the driver directly using the number shown on your ride status screen.</div>
+                </div>
+                <div class="sub-label">Contact Channels</div>
+                <div class="support-grid mb-4">
+                    <div class="sup-card">
+                        <div class="si"><i class="fa-solid fa-envelope"></i></div>
+                        <h6>Email</h6>
+                        <p>support@motoride.ph<br><span style="font-size:10px;">Response: 24–48 hrs</span></p>
+                    </div>
+                    <div class="sup-card">
+                        <div class="si"><i class="fa-brands fa-facebook-messenger"></i></div>
+                        <h6>Live Chat</h6>
+                        <p>Mon–Sat<br><span style="font-size:10px;">8:00 AM – 8:00 PM PHT</span></p>
+                    </div>
+                    <div class="sup-card">
+                        <div class="si"><i class="fa-solid fa-phone"></i></div>
+                        <h6>Hotline</h6>
+                        <p>+63 (2) 8XXX-XXXX<br><span style="font-size:10px;">Mon–Fri, 9 AM–6 PM</span></p>
+                    </div>
+                </div>
+                <div class="sub-label">When Contacting Support, Include:</div>
+                <ul style="font-size:12px; color:var(--muted); line-height:2; padding-left:18px; margin:0;">
+                    <li>Your <strong>registered name</strong> and <strong>username</strong></li>
+                    <li>Your <strong>role</strong> (Passenger or Driver)</li>
+                    <li>A brief description of the issue</li>
+                    <li>The <strong>Ride ID</strong> if applicable (visible in History)</li>
+                    <li>A screenshot if the problem is visual</li>
+                </ul>
+            </div>
+ 
+        </div><!-- /hp-body -->
+    </div><!-- /help-panel -->
+</div><!-- /help-overlay -->
+ 
+ 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+ 
+<script>
+    function openHelp()  {
+        document.getElementById('helpOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeHelp() {
+        document.getElementById('helpOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function overlayClick(e) {
+        if (e.target === document.getElementById('helpOverlay')) closeHelp();
+    }
+ 
+    function switchTab(id, btn) {
+        document.querySelectorAll('.hp-pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.hp-tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('pane-' + id).classList.add('active');
+        btn.classList.add('active');
+        // Scroll body to top on tab switch
+        document.querySelector('.hp-body').scrollTop = 0;
+    }
+ 
+    function filterFAQ(q) {
+        const term = q.toLowerCase();
+        const items = document.querySelectorAll('.faq-item');
+        let found = 0;
+        items.forEach(item => {
+            const text = (item.dataset.q + ' ' + item.textContent).toLowerCase();
+            const show = !term || text.includes(term);
+            item.style.display = show ? '' : 'none';
+            if (show) found++;
+        });
+        document.getElementById('faqNoResults').style.display = (term && found === 0) ? 'block' : 'none';
+    }
+ 
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeHelp();
+    });
+</script>
 
   </body>
   </html>
