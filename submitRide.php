@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $rider_name = $_SESSION['name'];
     $pickup = $data['pickup'] ?? '';
-    $dropoff = $data['dropoff'] ?? '';
+    $dropoff = $dropoff = isset($data['dropoff']) && !empty($data['dropoff']) ? $data['dropoff'] : 'Unknown Location';
+    error_log("Dropoff value in submitRide: " . $dropoff);
     $pickup_lat = $data['pickup_lat'] ?? null;
     $pickup_lng = $data['pickup_lng'] ?? null;
     $dropoff_lat = $data['dropoff_lat'] ?? null;

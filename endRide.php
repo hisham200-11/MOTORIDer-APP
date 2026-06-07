@@ -18,8 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     $fare           = $rideData['price'];
-    $tax            = round($fare * 0.12, 2); // 5% platform fee
-    $driver_earnings = round($fare - $tax, 2); // what driver gets
+    $tax            = round($fare * 0.12, 2);
+    $driver_earnings = round($fare - $tax, 2);
     
     $conn->begin_transaction();
 
@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmtRide->bind_param("ddii", $tax, $driver_earnings, $rideId, $driverId);
         $stmtRide->execute();
 
-        // Driver only gets earnings after tax
         $stmtDriver = $conn->prepare("UPDATE driver_tbl SET total_earnings = total_earnings + ?, total_rides = total_rides + 1 WHERE driver_id = ?");
         $stmtDriver->bind_param("di", $driver_earnings, $driverId);
         $stmtDriver->execute();

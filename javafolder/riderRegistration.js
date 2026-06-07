@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function reverseGeocodeNominatim(lat, lng) {
       return fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
         .then(res => res.json())
-        .then(data => data.address?.city || data.address?.town || data.display_name || `${lat.toFixed(4)}, ${lng.toFixed(4)}`)
+        .then(data => data.display_name || `${lat.toFixed(4)}, ${lng.toFixed(4)}`)
         .catch(err => {
           console.error('Nominatim reverse geocode error:', err);
           return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
@@ -655,20 +655,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
     window.selectDriver = function(driverId, driverName) {
         const pickup = document.getElementById('pickup').value.trim();
-        const dropoff = document.getElementById('dropoff').value.trim();
-        const paymentMethod = document.getElementById('paymentMethod').value;
-        const distance = currentRouteMeta.distance;
-        const fare = calculateFareAmount(distance);
+    const dropoff = document.getElementById('dropoff').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    const distance = currentRouteMeta.distance;
+    const fare = calculateFareAmount(distance);
+    
+    if (!dropoff) {
+        alert('Dropoff location is missing!');
+        return;
+    }
 
-        // Cash — go straight to booking
-        submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare);
-    };
+    submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare);
+};
+
 
     // ← submitRideRequest is now OUTSIDE selectDriver, at the same level
     function submitRideRequest(driverId, driverName, pickup, dropoff, paymentMethod, distance, fare) {
+      
         const requestBody = {
-            pickup, dropoff, distance, fare, payment_method: paymentMethod
-        };
+    pickup, dropoff, distance, fare, payment_method: paymentMethod,
+    pickup_lat: pickupMarker.getLatLng().lat,
+    pickup_lng: pickupMarker.getLatLng().lng,
+    dropoff_lat: dropoffMarker.getLatLng().lat,
+    dropoff_lng: dropoffMarker.getLatLng().lng
+};
 
         fetch('submitRide.php', {
             method: 'POST',
@@ -742,7 +752,6 @@ document.addEventListener('DOMContentLoaded', function() {
           .catch(err => console.error('Poll error:', err));
       }, 5000);
     }
-
     // ============================================
     // DISMISS RECEIPT FUNCTION (Called from checkRideStatus.php button)
     // ============================================

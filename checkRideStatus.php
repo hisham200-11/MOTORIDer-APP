@@ -14,7 +14,7 @@ if (!$rider_name) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT rr.*, d.name AS driver_name, d.brand, d.model, d.color, 
+$stmt = $conn->prepare("SELECT rr.id, rr.rider_name, rr.pickup, rr.dropoff, rr.distance, rr.price, rr.status, rr.driver_id, rr.start_time, rr.end_time, rr.payment_method, rr.gcash_deducted, d.name AS driver_name, d.brand, d.model, d.color, 
            d.plate_no, d.contact_no AS driver_contact, d.gcash AS driver_gcash
     FROM ride_requests rr
     LEFT JOIN driver_tbl d ON rr.driver_id = d.driver_id
@@ -38,7 +38,7 @@ if (!$ride) {
 
 if ($ride['status'] === 'pending') {
     echo "
-    <div style='text-align:center; padding: 20px;'>
+        <div style='text-align:center; padding: 20px;'>
         <p style='font-size:16px; color:#7c3aed;'>⏳ Waiting for a driver...</p>
         <p style='color:#888; font-size:13px;'>Your ride request is pending</p>
         <p><strong>Pickup:</strong> {$ride['pickup']}</p>
