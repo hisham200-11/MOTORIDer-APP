@@ -147,13 +147,15 @@ body {
 }
 
 .card {
-  width: 800px;
-  max-width: none;   /* REMOVE the 600px limit */
+  width: 100%;
+  max-width: none;   
   background: #fff;
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  margin-top: 0px;
   margin-bottom: 20px;
+  box-sizing: border-box; /* THE MAGIC FIX: Keeps padding inside the 100% width */
 }
 
 .card h2 {

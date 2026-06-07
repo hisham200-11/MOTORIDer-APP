@@ -48,8 +48,7 @@ if ($ride['status'] === 'pending') {
     </div>";
 
 } elseif ($ride['status'] === 'accepted') {
-    echo "
-    <div style='padding: 10px;'>
+    echo "<div style='padding: 10px;'>
         <span id='activeRidePickup' style='display:none;'>{$ride['pickup']}</span>
         <span id='activeRideDropoff' style='display:none;'>{$ride['dropoff']}</span>
         <p style='font-size:15px; color:#16a34a; font-weight:bold;'>✅ Driver is on the way!</p>

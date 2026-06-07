@@ -27,7 +27,7 @@ if ($role === 'rider') {
         echo "User already exists!";
     } else {
         $sql = "INSERT INTO customer_tbl (name, contact_no, username, password, gcash) 
-                VALUES ('$name', '$contact', '$username', '$password', '$gcash')"; 
+                VALUES ('$name', '$contact', '$username', '$password', '$gcash', 0.00)"; 
 
         if ($conn->query($sql) === TRUE) {
             echo "Registered successfully!";

@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
     map = L.map('map').setView([14.5995, 120.9842], 13);
     
     // Add OpenStreetMap tile layer
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19
-    }).addTo(map);
+    L.tileLayer('https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
+    attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    minZoom: 0,
+    maxZoom: 22,
+    accessToken: 'BIsIvEiFSGceqy5PcX2nMm4fYD41sxDbLzRYrJVN7Uzl5A4JohiAMb53ffZlArFm'
+}).addTo(map);
 });
 
 // ============================================
