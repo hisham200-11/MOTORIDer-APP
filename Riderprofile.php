@@ -68,10 +68,8 @@ if (!isset($_SESSION['customer_id'])) {
       <p id="status" class="status"></p>
     </div>
 
-  </div> 
-
   <div class="card">
-      <h3>GCash Balance</h3>
+      <label>GCash Balance</label>
       <p class="subtitle">Manage your in-app GCash wallet</p>
 
     <div class="gcash-balance-display">
