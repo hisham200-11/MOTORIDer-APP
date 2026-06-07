@@ -4,21 +4,56 @@
 let map = null;
 let pickupMarker = null;
 let dropoffMarker = null;
+let driverMarker = null; 
+let currentDriverLocation = null;
 
 // Initialize map when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Leaflet map
-    map = L.map('map').setView([14.5995, 120.9842], 13);
+    map = L.map('map').setView([14.5995, 120.9842], 13); 
     
-    // Add OpenStreetMap tile layer
     L.tileLayer('https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
     attribution: '<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     minZoom: 0,
     maxZoom: 22,
     accessToken: 'BIsIvEiFSGceqy5PcX2nMm4fYD41sxDbLzRYrJVN7Uzl5A4JohiAMb53ffZlArFm'
 }).addTo(map);
+
+    startDriverTracking(); // Boot up the GPS tracker!
 });
 
+// NEW FUNCTION: Continuously tracks the driver's phone/laptop GPS
+function startDriverTracking() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.watchPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                currentDriverLocation = { lat, lng };
+
+                if (!driverMarker) {
+                    // Create the blue driver pin on first load
+                    driverMarker = L.marker([lat, lng], {
+                        icon: L.icon({
+                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+                        })
+                    }).addTo(map).bindPopup('Your Current Location');
+                    
+                    // Zoom into the driver immediately if they don't have an active ride
+                    if (!routeLine) {
+                        map.setView([lat, lng], 16);
+                    }
+                } else {
+                    // Instantly slide the marker to their new location as they drive
+                    driverMarker.setLatLng([lat, lng]);
+                }
+            },
+            (error) => console.warn("Driver tracking failed:", error),
+            { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 }
+        );
+    }
+}
 // ============================================
 // STATUS TOGGLE
 // ============================================
@@ -212,10 +247,7 @@ function displayRideOnMap(pickupLat, pickupLng, dropoffLat, dropoffLng) {
         icon: L.icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
+            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
         })
     }).addTo(map).bindPopup('Pickup Location');
     
@@ -224,22 +256,27 @@ function displayRideOnMap(pickupLat, pickupLng, dropoffLat, dropoffLng) {
         icon: L.icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
+            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
         })
     }).addTo(map).bindPopup('Dropoff Location');
     
-    // Fetch route from OSRM
-    const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${pickupLng},${pickupLat};${dropoffLng},${dropoffLat}?overview=full&geometries=geojson`;
+    // TRIPLE ROUTE LOGIC: Check if we have the driver's live location
+    let osrmUrl = '';
+    if (currentDriverLocation) {
+        const dLng = currentDriverLocation.lng;
+        const dLat = currentDriverLocation.lat;
+        // Connects Driver -> Pickup -> Dropoff
+        osrmUrl = `https://router.project-osrm.org/route/v1/driving/${dLng},${dLat};${pickupLng},${pickupLat};${dropoffLng},${dropoffLat}?overview=full&geometries=geojson`;
+    } else {
+        // Fallback: Just Pickup -> Dropoff if GPS is off
+        osrmUrl = `https://router.project-osrm.org/route/v1/driving/${pickupLng},${pickupLat};${dropoffLng},${dropoffLat}?overview=full&geometries=geojson`;
+    }
     
     fetch(osrmUrl)
         .then(res => res.json())
         .then(data => {
             if (data.routes && data.routes[0]) {
                 const coordinates = data.routes[0].geometry.coordinates;
-                // Draw route line (blue polyline)
                 routeLine = L.polyline(
                     coordinates.map(coord => [coord[1], coord[0]]),
                     { color: '#3b82f6', weight: 5, opacity: 0.7 }
@@ -248,9 +285,19 @@ function displayRideOnMap(pickupLat, pickupLng, dropoffLat, dropoffLng) {
         })
         .catch(err => console.error('OSRM routing error:', err));
     
-    // Fit map to both markers
-    const bounds = L.latLngBounds([[pickupLat, pickupLng], [dropoffLat, dropoffLng]]);
+    // Calculate boundaries so the map perfectly fits all 3 pins on screen
+    let bounds;
+    if (currentDriverLocation) {
+        bounds = L.latLngBounds([
+            [currentDriverLocation.lat, currentDriverLocation.lng], 
+            [pickupLat, pickupLng], 
+            [dropoffLat, dropoffLng]
+        ]);
+    } else {
+        bounds = L.latLngBounds([[pickupLat, pickupLng], [dropoffLat, dropoffLng]]);
+    }
     map.fitBounds(bounds, { padding: [50, 50] });
+
 }
 
 function clearMapRoute() {
@@ -265,6 +312,11 @@ function clearMapRoute() {
     if (routeLine) {
         map.removeLayer(routeLine);
         routeLine = null;
+    }
+    
+    // Zoom back in on the driver once the route is cleared!
+    if (currentDriverLocation) {
+        map.setView([currentDriverLocation.lat, currentDriverLocation.lng], 16);
     }
 }
 
