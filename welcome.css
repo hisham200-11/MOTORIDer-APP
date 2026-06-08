@@ -233,7 +233,6 @@ section, .footer-tagline, .help-fab, .help-overlay {
   opacity: 0.5;
   font-family: 'DM Sans', sans-serif;
   padding-bottom: 48px;
-  color: white
 }
 
 /* ══════════════════════════════════════
@@ -357,30 +356,51 @@ section, .footer-tagline, .help-fab, .help-overlay {
 }
 .hp-close:hover { background: rgba(255,255,255,0.28); }
 
+/* Tab bar wrapper — for fade-right overflow indicator */
+.hp-tabs-wrap {
+  position: relative;
+  flex-shrink: 0;
+  background: #fafafa;
+  border-bottom: 1px solid #e2e8f0;
+}
+.hp-tabs-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 36px; height: 100%;
+  background: linear-gradient(to right, transparent, #fafafa);
+  pointer-events: none;
+  z-index: 2;
+}
+
 /* Tab bar */
 .hp-tabs {
   display: flex;
-  border-bottom: 1px solid #e2e8f0;
-  background: #fafafa;
   overflow-x: auto;
-  flex-shrink: 0;
   scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
 }
 .hp-tabs::-webkit-scrollbar { display: none; }
 
 .hp-tab {
-  padding: 12px 16px;
-  font-size: 12px; font-weight: 600;
+  padding: 10px 11px;
+  font-size: 11px; font-weight: 600;
   font-family: 'DM Sans', sans-serif;
   color: #64748b;
   border: none; background: none; cursor: pointer;
   white-space: nowrap;
   border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
-  display: flex; align-items: center; gap: 5px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  display: flex; align-items: center; gap: 4px;
+  flex-shrink: 0;
 }
-.hp-tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
-.hp-tab i { font-size: 12px; }
+.hp-tab.active {
+  color: #7c3aed;
+  border-bottom-color: #7c3aed;
+  background: rgba(124,58,237,0.04);
+}
+.hp-tab i { font-size: 11px; }
 
 /* Scrollable body */
 .hp-body {

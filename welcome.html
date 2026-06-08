@@ -84,7 +84,7 @@
         </button>
       </div>
 
-      <div class="hp-tabs" id="helpTabs">
+      <div class="hp-tabs-wrap"><div class="hp-tabs" id="helpTabs">
         <button class="hp-tab active" onclick="switchTab('getting-started', this)"><i class="fa-solid fa-rocket"></i> Getting Started</button>
         <button class="hp-tab" onclick="switchTab('rider-guide', this)"><i class="fa-solid fa-user"></i> Passenger Guide</button>
         <button class="hp-tab" onclick="switchTab('driver-guide', this)"><i class="fa-solid fa-motorcycle"></i> Driver Guide</button>
@@ -92,7 +92,7 @@
         <button class="hp-tab" onclick="switchTab('faq', this)"><i class="fa-solid fa-comments"></i> FAQ</button>
         <button class="hp-tab" onclick="switchTab('tips', this)"><i class="fa-solid fa-lightbulb"></i> Tips</button>
         <button class="hp-tab" onclick="switchTab('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
-      </div>
+      </div></div>
 
       <div class="hp-body">
 
@@ -234,6 +234,8 @@
       document.getElementById('pane-'+id).classList.add('active');
       btn.classList.add('active');
       document.querySelector('.hp-body').scrollTop=0;
+      // scroll active tab into view smoothly
+      btn.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
     }
     function filterFAQ(q) {
       const term=q.toLowerCase();
