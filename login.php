@@ -22,7 +22,6 @@ if ($role === 'rider') {
         echo "Please fill all fields!";
         exit();
     }
-
     // 3. CHECK DATABASE
     $sql = "SELECT * FROM customer_tbl WHERE username='$username' AND password='$password'";
     $result = $conn->query($sql);
