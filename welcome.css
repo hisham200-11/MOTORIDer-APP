@@ -233,6 +233,7 @@ section, .footer-tagline, .help-fab, .help-overlay {
   opacity: 0.5;
   font-family: 'DM Sans', sans-serif;
   padding-bottom: 48px;
+  color: white
 }
 
 /* ══════════════════════════════════════
