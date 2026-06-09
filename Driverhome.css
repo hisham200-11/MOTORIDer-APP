@@ -200,7 +200,13 @@ body {
 }
 
 .container.column {
+  width: 100%;
+  max-width: 45%; /* Prevents the profile from stretching massively wide */
+  margin: 40px auto 100px auto; /* Centers it perfectly and adds 100px bottom clearance for the nav bar */
+  display: flex;
   flex-direction: column;
+  padding: 0 20px; /* Keeps cards away from the screen edge on mobile */
+  box-sizing: border-box;
 }
 
 .input-group {
@@ -216,7 +222,7 @@ body {
 }
 
 .input-group input {
-  width: 100%;
+  width: 100%; /* Sizing in percent */
   padding: 12px;
   border-radius: 8px;
   border: 1px solid var(--border-color-dark);
@@ -224,6 +230,7 @@ body {
   transition: 0.2s;
   background: var(--input-bg);
   color: var(--text-primary);
+  box-sizing: border-box; /* THE FIX: Keeps padding inside the 100% width! */
 }
 
 .input-group input:focus {
