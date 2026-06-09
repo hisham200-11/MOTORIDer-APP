@@ -32,6 +32,7 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- DARK MODE ADDITION START -->
+     
     <link rel="stylesheet" href="dark-mode.css">
     <!-- DARK MODE ADDITION END -->
 

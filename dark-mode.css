@@ -172,6 +172,8 @@ html.dark-mode {
   font-weight: 600;
   color: var(--text-primary);
   font-family: 'DM Sans', 'Arial', sans-serif;
+
+  transform: translateX(-200px); /* ADD THIS */
 }
 
 .theme-toggle::before {
@@ -290,5 +292,6 @@ html.dark-mode .badge-info {
   background-color: rgba(96, 165, 250, 0.15);
   color: var(--info-color);
 }
+
 
 /* DARK MODE ADDITION END */
