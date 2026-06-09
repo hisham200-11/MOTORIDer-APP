@@ -88,7 +88,7 @@ if (!isset($_SESSION['customer_id'])) {
         <button class="btn" onclick="calculateFare()">Find Available Drivers</button>
       </div>
 
-      <div class="card" id="rideStatus">
+      <div id="rideStatus">
         <!-- Ride status will dynamically appear here -->
       </div>
 

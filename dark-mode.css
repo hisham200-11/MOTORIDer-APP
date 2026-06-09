@@ -360,4 +360,120 @@ html.dark-mode .modal-label {
 html.dark-mode .modal-divider {
     border-top: 1px solid var(--border-color) !important;
 }
+
+/* =========================================
+   ACTIVE RIDE & RECEIPT DARK MODE OVERRIDES
+   ========================================= */
+
+/* 1. Override the light background boxes from JS and PHP */
+html.dark-mode #rideStatus > div {
+    background: var(--bg-secondary) !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Target the red "Insufficient Balance" box specifically to keep it red, but dark */
+html.dark-mode #rideStatus > div[style*="border: 3px solid #ef4444"] {
+    border-color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* 2. Force standard text to use dark mode text colors */
+html.dark-mode #rideStatus p,
+html.dark-mode #rideStatus span,
+html.dark-mode #rideStatus strong {
+    color: var(--text-primary) !important;
+}
+
+/* 3. Recolor muted/gray text (dates, subtitles, labels) */
+html.dark-mode #rideStatus p[style*="color:#888"],
+html.dark-mode #rideStatus p[style*="color: #666"],
+html.dark-mode #rideStatus p[style*="color: #555"],
+html.dark-mode #rideStatus span[style*="color: #555"] {
+    color: var(--text-secondary) !important;
+}
+
+/* 4. Brighten the specific Status Colors so they are readable on dark backgrounds */
+/* Purple/Accent text (Pending, Started, Fare) */
+html.dark-mode #rideStatus p[style*="color:#7c3aed"],
+html.dark-mode #rideStatus p[style*="color:#9333ea"],
+html.dark-mode #rideStatus span[style*="color:#9333ea"],
+html.dark-mode #rideStatus p[style*="color: #9333ea"] {
+    color: #c084fc !important; /* Lighter, glowing purple */
+}
+
+/* Green text (Accepted / Confirmed) */
+html.dark-mode #rideStatus p[style*="color:#16a34a"],
+html.dark-mode #rideStatus h3[style*="color: #10b981"] {
+    color: #4ade80 !important; /* Lighter, glowing green */
+}
+
+/* Red text (Errors) */
+html.dark-mode #rideStatus p[style*="color:#ef4444"],
+html.dark-mode #rideStatus p[style*="color: #ef4444"] {
+    color: #f87171 !important;
+}
+
+/* 5. Fix the horizontal line dividers */
+html.dark-mode #rideStatus hr {
+    border-top-color: var(--border-color-dark) !important;
+}
+
+html.dark-mode #rideStatus hr[style*="2px solid #9333ea"] {
+    border-top-color: var(--accent-primary) !important;
+}
+
+/* 6. Protect the Done Button so its text stays white */
+html.dark-mode #rideStatus button {
+    color: white !important;
+}
+
+/* =========================================
+   DRIVER RECEIPT MODAL DARK MODE OVERRIDES
+   ========================================= */
+
+/* 1. Override the solid white modal background */
+html.dark-mode #receiptModal > div {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* 2. Force standard text (Titles and bold values) to dark mode colors */
+html.dark-mode #receiptModal h2,
+html.dark-mode #receiptModal strong,
+html.dark-mode #receiptModal span[style*="font-size: 18px"] {
+    color: var(--text-primary) !important;
+}
+
+/* 3. Recolor muted text (Passenger, Pickup, Dropoff labels) */
+html.dark-mode #receiptModal p[style*="color:#888"],
+html.dark-mode #receiptModal span[style*="color:#666"] {
+    color: var(--text-secondary) !important;
+}
+
+/* 4. Brighten the Platform Fee (Red) so it's readable */
+html.dark-mode #receiptModal span[style*="color:#e74c3c"],
+html.dark-mode #receiptModal strong[style*="color:#e74c3c"] {
+    color: #f87171 !important; 
+}
+
+/* 5. Brighten the Total Earnings (Purple) */
+html.dark-mode #receiptModal span[style*="color: #9333ea"] {
+    color: #c084fc !important; 
+}
+
+/* 6. Fix the horizontal line dividers */
+html.dark-mode #receiptModal div[style*="border-top: 1px solid #eee"] {
+    border-top-color: var(--border-color-dark) !important;
+}
+
+html.dark-mode #receiptModal div[style*="border-top: 2px solid #9333ea"] {
+    border-top-color: var(--accent-primary) !important;
+}
+
+/* 7. Protect the "Done" Button text */
+html.dark-mode #receiptModal button {
+    color: white !important;
+}
 /* DARK MODE ADDITION END */

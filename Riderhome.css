@@ -203,7 +203,7 @@ html.dark-mode .input-group input:focus {
 }
 
 .drivers-panel.show {
-  max-height: 1000px;
+  max-height: 2000px;
   opacity: 1;
 }
 
@@ -300,11 +300,11 @@ html.dark-mode .input-group input:focus {
 .info-side {
   width: 50%;
   height: 100%;
-  padding: 20px;
+  padding: 20px 20px 100px 20px; /* THE FIX: 100px bottom padding clears the nav bar! */
   overflow-y: auto;
   box-sizing: border-box;
   order: -1;
-  min-width: 0; /* ADD THIS LINE */
+  min-width: 0; /* THE FIX: Prevents horizontal overflow on small screens */
 }
 
 .map-side {
@@ -545,6 +545,26 @@ html.dark-mode .input-group input:focus {
   font-weight: bold;
   letter-spacing: 1px;
 }
+
+/* =========================================
+   RIDE STATUS CONTAINER FIX
+   ========================================= */
+#rideStatus {
+    width: fit-content; /* Shrinks the box to exactly fit the text inside */
+    min-width: 320px; /* Keeps it from getting too skinny on very short text */
+    max-width: 100%; /* Prevents it from spilling off mobile screens */
+    margin: 35px auto; /* 35px large margin on top/bottom, and 'auto' centers it */
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+#rideStatus > div {
+    width: 100%;
+    padding: 25px !important; /* Overrides the PHP to ensure a nice, loose fit inside */
+    box-sizing: border-box;
+}
+
+
 /* Animation for notifications */
 @keyframes slideIn {
   from {
