@@ -46,20 +46,22 @@ body {
 }
 
 .user-actions {
-  font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* space between Hi, User and Logout */
+    font-size: 14px;
 }
 
 .user-actions span {
-  margin-right: 15px;
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+    margin-right: -35px; /* remove old margin */
+    color: var(--text-secondary);
 }
 
 .logout {
-  color: var(--accent-primary);
-  cursor: pointer;
-  font-weight: 500;
-  transition: color 0.3s ease;
+    color: var(--accent-primary);
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
 }
 
 /* STATS ROW */
