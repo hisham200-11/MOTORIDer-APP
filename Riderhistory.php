@@ -445,20 +445,16 @@ $total_spent = array_sum(array_column($rides, 'price'));
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
         <div class="nav-item">
-            <a href="Riderhome.php" style="text-decoration:none; color:inherit;">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-            </a>
+            <i class="fa-solid fa-house"></i>
+            <a href="Riderhome.php" style="text-decoration: none; color: inherit;"><span>Home</span></a>
         </div>
         <div class="nav-item active">
             <i class="fa-solid fa-receipt"></i>
             <span>History</span>
         </div>
         <div class="nav-item">
-            <a href="Riderprofile.php" style="text-decoration:none; color:inherit;">
-                <i class="fa-solid fa-user"></i>
-                <span>Profile</span>
-            </a>
+            <i class="fa-solid fa-user"></i>
+            <span>Profile</span>
         </div>
     </div>
 
