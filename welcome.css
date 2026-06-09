@@ -108,10 +108,6 @@ section, .footer-tagline, .help-fab, .help-overlay {
   animation: movePurple 3s linear infinite;
 }
 
-html:not(.dark-mode) .purple-gradient {
-  background: linear-gradient(to right, #7c3aed, #a855f7, #d946ef, #7c3aed);
-}
-
 @keyframes movePurple {
   from { background-position: 0% center; }
   to   { background-position: 200% center; }
