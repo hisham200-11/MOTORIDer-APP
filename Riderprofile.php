@@ -34,14 +34,14 @@ if (!isset($_SESSION['customer_id'])) {
     <i class="fa-solid fa-motorcycle"></i> MotoRide
   </div>
     <div class="user-actions">
-      <span>
-      <span>Hi, <?php echo $_SESSION['name']; ?></span>
-      <!-- DARK MODE ADDITION START -->
-      <button class="theme-toggle" onclick="toggleDarkMode()"></button>
-      <!-- DARK MODE ADDITION END -->
-      <a href="logout.php" class="logout">Logout</a>
-      </span>
-    </div>
+    <span>Hi, <?php echo $_SESSION['name']; ?></span>
+
+    <!-- DARK MODE ADDITION START -->
+    <button class="theme-toggle" onclick="toggleDarkMode()"></button>
+    <!-- DARK MODE ADDITION END -->
+
+    <a href="logout.php" class="logout">Logout</a>
+</div>
   </div>
 
   <!-- PROFILE CONTENT -->
