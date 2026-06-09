@@ -454,7 +454,7 @@ $total_spent = array_sum(array_column($rides, 'price'));
         </div>
         <div class="nav-item">
             <i class="fa-solid fa-user"></i>
-            <span>Profile</span>
+            <a href="Riderprofile.php" style="text-decoration: none; color: inherit;"><span>Profile</span></a>
         </div>
     </div>
 
