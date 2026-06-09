@@ -476,4 +476,48 @@ html.dark-mode #receiptModal div[style*="border-top: 2px solid #9333ea"] {
 html.dark-mode #receiptModal button {
     color: white !important;
 }
+
+/* =========================================
+   LEAFLET MAP DARK MODE OVERRIDES
+   ========================================= */
+
+/* 1. Invert the map tiles but keep colors somewhat natural */
+html.dark-mode .leaflet-tile {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* 2. Darken the Zoom In/Out Buttons (+ / -) */
+html.dark-mode .leaflet-bar a {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-bottom-color: var(--border-color-dark) !important;
+}
+
+html.dark-mode .leaflet-bar a:hover {
+    background-color: var(--bg-primary) !important;
+    color: var(--accent-primary) !important;
+}
+
+/* 3. Darken Map Popups (If you click on a marker/pin) */
+html.dark-mode .leaflet-popup-content-wrapper,
+html.dark-mode .leaflet-popup-tip {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark-mode .leaflet-popup-content p {
+    color: var(--text-primary) !important;
+}
+
+/* 4. Darken the tiny Attribution text bar at the bottom right */
+html.dark-mode .leaflet-control-attribution {
+    background: rgba(0, 0, 0, 0.6) !important;
+    color: var(--text-secondary) !important;
+}
+
+html.dark-mode .leaflet-control-attribution a {
+    color: var(--accent-primary) !important;
+}
+
 /* DARK MODE ADDITION END */
