@@ -36,10 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>MotoRide Admin Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- DARK MODE ADDITION START -->
+    <link rel="stylesheet" href="dark-mode.css">
+    <script src="dark-mode.js"></script>
+    <!-- DARK MODE ADDITION END -->
     <link rel="stylesheet" href="adminlogin.css">
 
 </head>
 <body>
+
+<!-- DARK MODE ADDITION START -->
+<div style="position: absolute; top: 20px; right: 20px;">
+  <button class="theme-toggle" onclick="toggleDarkMode()" style="position: absolute; top: 20px; right: 20px; z-index: 10;"></button>
+</div>
+<!-- DARK MODE ADDITION END -->
 
 <div class="login-wrap">
     <div class="login-logo">

@@ -1,3 +1,99 @@
+/* CSS VARIABLES - THEME SUPPORT */
+:root {
+  --bg-primary: #f5f6fa;
+  --bg-secondary: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-light: #9ca3af;
+  --border-color: #e5e7eb;
+  --border-color-light: #f3f4f6;
+  --accent-primary: #7c3aed;
+  --accent-secondary: #9333ea;
+  --accent-gradient-start: #9333ea;
+  --accent-gradient-end: #7c3aed;
+  --accent-light: #f3e8ff;
+  --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --card-shadow-hover: 0 4px 20px rgba(0,0,0,0.1);
+  --status-success: #059669;
+  --status-error: #dc2626;
+}
+
+html.dark-mode {
+  --bg-primary: #0f0f13;
+  --bg-secondary: #1a1a24;
+  --text-primary: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --text-light: #8b8fa3;
+  --border-color: #2d3748;
+  --border-color-light: #404050;
+  --accent-primary: #b366ff;
+  --accent-secondary: #e879f9;
+  --accent-gradient-start: #e879f9;
+  --accent-gradient-end: #b366ff;
+  --accent-light: rgba(184, 102, 255, 0.15);
+  --card-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  --card-shadow-hover: 0 4px 20px rgba(0,0,0,0.5);
+  --status-success: #4ade80;
+  --status-error: #ff6b6b;
+}
+
+/* BASE STYLES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Zen Dots', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* DARK MODE SUPPORT */
+html.dark-mode body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--accent-primary);
+  transition: color 0.3s ease;
+}
+
+.user-actions {
+  font-size: 14px;
+}
+
+.user-actions span {
+  margin-right: 15px;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.logout {
+  color: var(--accent-primary);
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
 .history-container {
             max-width: 600px;
             margin: 0 auto;
@@ -5,7 +101,7 @@
         }
 
         .summary-card {
-            background: linear-gradient(135deg, #9333ea, #7c3aed);
+            background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
             border-radius: 16px;
             padding: 25px;
             color: white;
@@ -49,22 +145,24 @@
         .section-title {
             font-size: 15px;
             font-weight: bold;
-            color: #444;
+            color: var(--text-primary);
             margin-bottom: 15px;
+            transition: color 0.3s ease;
         }
 
         .ride-card {
-            background: #fff;
+            background: var(--bg-secondary);
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            box-shadow: var(--card-shadow);
             cursor: pointer;
             transition: 0.2s;
+            border: 1px solid var(--border-color);
         }
 
         .ride-card:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: var(--card-shadow-hover);
         }
 
         .ride-card-header {
@@ -77,19 +175,22 @@
         .ride-card-header .rider {
             font-size: 15px;
             font-weight: bold;
-            color: #333;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
         .ride-card-header .earnings {
             font-size: 18px;
             font-weight: bold;
-            color: #9333ea;
+            color: var(--accent-primary);
+            transition: color 0.3s ease;
         }
 
         .ride-card-date {
             font-size: 12px;
-            color: #aaa;
+            color: var(--text-light);
             margin-bottom: 12px;
+            transition: color 0.3s ease;
         }
 
         .ride-card-route {
@@ -97,13 +198,15 @@
             align-items: center;
             gap: 8px;
             font-size: 13px;
-            color: #555;
+            color: var(--text-secondary);
             margin-bottom: 12px;
+            transition: color 0.3s ease;
         }
 
         .ride-card-route i {
-            color: #9333ea;
+            color: var(--accent-primary);
             width: 14px;
+            transition: color 0.3s ease;
         }
 
         .ride-card-footer {
@@ -111,26 +214,30 @@
             justify-content: space-between;
             align-items: center;
             padding-top: 12px;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid var(--border-color);
+            transition: border-color 0.3s ease;
         }
 
         .payment-badge {
-            background: #f3e8ff;
-            color: #7c3aed;
+            background: var(--accent-light);
+            color: var(--accent-primary);
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 12px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .distance-badge {
             font-size: 12px;
-            color: #888;
+            color: var(--text-light);
+            transition: color 0.3s ease;
         }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #aaa;
+            color: var(--text-light);
+            transition: color 0.3s ease;
         }
 
         .empty-state i {
@@ -156,13 +263,15 @@
         }
 
         .modal-box {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 16px;
             padding: 30px;
             width: 90%;
             max-width: 380px;
             max-height: 90vh;
             overflow-y: auto;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .modal-title {
@@ -170,13 +279,16 @@
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
         .modal-subtitle {
             text-align: center;
-            color: #888;
+            color: var(--text-light);
             font-size: 13px;
             margin-bottom: 20px;
+            transition: color 0.3s ease;
         }
 
         .modal-row {
@@ -187,22 +299,26 @@
         }
 
         .modal-row .modal-label {
-            color: #666;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
         }
 
         .modal-row .modal-value {
             font-weight: bold;
-            color: #333;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
         .modal-divider {
             border: none;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-color);
             margin: 15px 0;
+            transition: border-color 0.3s ease;
         }
 
         .modal-divider.thick {
-            border-top: 2px solid #9333ea;
+            border-top: 2px solid var(--accent-primary);
+            transition: border-color 0.3s ease;
         }
 
         .modal-total {
@@ -214,12 +330,15 @@
         .modal-total .total-label {
             font-size: 16px;
             font-weight: bold;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
 
         .modal-total .total-value {
             font-size: 22px;
             font-weight: bold;
-            color: #9333ea;
+            color: var(--accent-primary);
+            transition: color 0.3s ease;
         }
 
         .modal-tax-row {
@@ -227,18 +346,29 @@
             justify-content: space-between;
             margin-bottom: 12px;
             font-size: 14px;
-            color: #e74c3c;
+            color: var(--status-error);
+            transition: color 0.3s ease;
         }
 
         .modal-close-btn {
             width: 100%;
             margin-top: 20px;
             padding: 12px;
-            background: linear-gradient(90deg, #9333ea, #7c3aed);
+            background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
             color: white;
             border: none;
             border-radius: 10px;
             font-size: 15px;
             cursor: pointer;
             font-family: 'Zen Dots', sans-serif;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            opacity: 0.9;
+        }
+
+        .modal-close-btn:focus {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
         }

@@ -31,7 +31,15 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
+    <!-- DARK MODE ADDITION START -->
+    <link rel="stylesheet" href="dark-mode.css">
+    <!-- DARK MODE ADDITION END -->
+
     <link rel="stylesheet" href="Driverhome.css">
+
+    <!-- DARK MODE ADDITION START -->
+    <script src="dark-mode.js"></script>
+    <!-- DARK MODE ADDITION END -->
 </head>
 <body>
 
@@ -42,6 +50,9 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
 
         <div class="user-actions">
             <span>Hi, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+            <!-- DARK MODE ADDITION START -->
+            <button class="theme-toggle" onclick="toggleDarkMode()"></button>
+            <!-- DARK MODE ADDITION END -->
             <i class="fa-solid fa-arrow-right-from-bracket"></i> 
             <a href="logout.php" class="logout">Logout</a>
         </div>

@@ -55,6 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>MotoRide Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- DARK MODE ADDITION START -->
+    <link rel="stylesheet" href="dark-mode.css">
+    <script src="dark-mode.js"></script>
+    <!-- DARK MODE ADDITION END -->
     <link rel="stylesheet" href="admin.css">
 
 </head>
@@ -91,6 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </nav>
 
     <div class="sidebar-footer">
+        <!-- DARK MODE ADDITION START -->
+        <a href="#" onclick="toggleDarkMode(); return false;" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+            <i class="fa-solid fa-moon"></i> <span>Dark Mode</span>
+        </a>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 10px 0;">
+        <!-- DARK MODE ADDITION END -->
         <a href="adminlogout.php">
             <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
         </a>

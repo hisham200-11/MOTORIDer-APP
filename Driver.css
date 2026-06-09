@@ -3,22 +3,30 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Zen Dots', sans-serif;
- 
 }
 
 body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-color: whitesmoke;
+  color: var(--text-primary);
   display: flex;
   justify-content: center;
   align-items: center;
 
-  /* Galaxy gradient */
+  /* Light mode background */
+  background: linear-gradient(120deg, #f5f6fa, #f0f1f5, #eff0f4, #f5f6fa);
+  background-size: 400% 400%;
+  animation: gradientMove 50s ease infinite;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode background */
+html.dark-mode body {
   background: linear-gradient(120deg, #0b0033, #110827, #310c3a, #1d0505);
   background-size: 400% 400%;
   animation: gradientMove 50s ease infinite;
+  color: var(--text-primary);
 }
 
 /* Moving gradient */
@@ -84,40 +92,69 @@ justify-content: center;
 
 /* CARD */
 .card {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.95);
   padding: 25px;
   border-radius: 12px;
   width: 300px;
   text-align: left;
   backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+html.dark-mode .card {
+  background: rgba(26, 26, 36, 0.95);
+  color: var(--text-primary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .card h2 {
   margin-bottom: 5px;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .card p {
   font-size: 11px;
   margin-bottom: 15px;
-  opacity: 0.8;
+  opacity: 0.85;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .card label {
   font-size: 12px;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  display: block;
+  margin-bottom: 6px;
 }
 
 .card input {
   width: 100%;
   padding: 10px;
   margin: 8px 0 15px;
-  border: none;
+  border: 1px solid var(--border-color-dark);
   border-radius: 8px;
-  background: rgba(255,255,255,0.1);
-  color: white;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: 'Zen Dots', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .card input::placeholder {
-  color: rgba(255,255,255,0.6);
+  color: var(--input-placeholder);
+}
+
+.card input:focus {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+}
+
+html.dark-mode .card input:focus {
+  box-shadow: 0 0 0 3px rgba(179, 102, 255, 0.15);
 }
 
 .card button {
@@ -125,25 +162,39 @@ justify-content: center;
   padding: 10px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(90deg, #a855f7, #d946ef);
+  background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
   color: white;
   font-weight: bold;
   cursor: pointer;
+  transition: opacity 0.3s ease;
+  font-family: 'Zen Dots', sans-serif;
 }
 
 .card button:hover {
   opacity: 0.9;
 }
 
+.card button:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
 .signup {
   text-align: center;
   margin-top: 10px;
   font-size: 12px;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .signup a {
-  color: #d946ef;
+  color: var(--accent-primary);
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.signup a:hover {
+  color: var(--accent-secondary);
 }
 
 /* FOOTER */

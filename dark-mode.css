@@ -1,0 +1,294 @@
+/* DARK MODE ADDITION START - CSS VARIABLES SYSTEM */
+
+:root {
+  /* LIGHT MODE VARIABLES (DEFAULT) */
+  /* Background Colors */
+  --bg-primary: #f5f6fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f3f4f6;
+  
+  /* Text Colors */
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --text-light: #9ca3af;
+  --text-placeholder: #a1a5b0;
+  
+  /* Border & Outline */
+  --border-color: #e5e7eb;
+  --border-color-dark: #d1d5db;
+  --border-color-light: #f3f4f6;
+  
+  /* Accent Colors */
+  --accent-primary: #7c3aed;
+  --accent-secondary: #9333ea;
+  --accent-light: #d946ef;
+  --accent-gradient-start: #9333ea;
+  --accent-gradient-end: #7c3aed;
+  
+  /* Status Colors */
+  --success-color: #059669;
+  --success-hover: #047857;
+  --success-light: #d1fae5;
+  --error-color: #dc2626;
+  --error-hover: #b91c1c;
+  --error-light: #fee2e2;
+  --warning-color: #d97706;
+  --warning-light: #fef3c7;
+  --info-color: #0369a1;
+  --info-hover: #0284c7;
+  --info-light: #e0f2fe;
+  
+  /* Gradient Colors */
+  --gcash-gradient-start: #0070ba;
+  --gcash-gradient-end: #00a8e0;
+  --avatar-gradient-start: #9333ea;
+  --avatar-gradient-end: #7c3aed;
+  
+  /* Shadows */
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --shadow-color-dark: rgba(0, 0, 0, 0.12);
+  --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --card-shadow-dark: 0 8px 32px rgba(0,0,0,0.12);
+  
+  /* Component Specific */
+  --driver-card-bg: #f3f4f6;
+  --driver-card-border: #d1d5db;
+  --driver-card-text: #111827;
+  --driver-card-text-light: #4b5563;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --input-border-focus: #7c3aed;
+  --input-placeholder: #a1a5b0;
+  --autocomplete-bg: #ffffff;
+  --autocomplete-item-bg: #f3f4f6;
+  --autocomplete-item-text: #111827;
+  --toggle-bg: #e5e7eb;
+  --toggle-active-bg: #7c3aed;
+  --toggle-circle: #ffffff;
+  
+  /* Map Filter */
+  --leaflet-tile-filter: none;
+}
+
+/* DARK MODE VARIABLES */
+html.dark-mode {
+  /* Background Colors */
+  --bg-primary: #0f0f13;
+  --bg-secondary: #1a1a24;
+  --bg-tertiary: #262635;
+  
+  /* Text Colors */
+  --text-primary: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #b4b5c1;
+  --text-light: #8b8fa3;
+  --text-placeholder: #6b7280;
+  
+  /* Border & Outline */
+  --border-color: #2d3748;
+  --border-color-dark: #4a5568;
+  --border-color-light: #1f2937;
+  
+  /* Accent Colors */
+  --accent-primary: #b366ff;
+  --accent-secondary: #e879f9;
+  --accent-light: #f472b6;
+  --accent-gradient-start: #e879f9;
+  --accent-gradient-end: #b366ff;
+  
+  /* Status Colors */
+  --success-color: #4ade80;
+  --success-hover: #22c55e;
+  --success-light: #166534;
+  --error-color: #ff6b6b;
+  --error-hover: #ff5252;
+  --error-light: #7f1d1d;
+  --warning-color: #fbbf24;
+  --warning-light: #78350f;
+  --info-color: #60a5fa;
+  --info-hover: #3b82f6;
+  --info-light: #1e3a8a;
+  
+  /* Gradient Colors */
+  --gcash-gradient-start: #1e90ff;
+  --gcash-gradient-end: #00d4ff;
+  --avatar-gradient-start: #e879f9;
+  --avatar-gradient-end: #b366ff;
+  
+  /* Shadows */
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-color-dark: rgba(0, 0, 0, 0.6);
+  --card-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  --card-shadow-dark: 0 8px 32px rgba(0,0,0,0.6);
+  
+  /* Component Specific */
+  --driver-card-bg: #262635;
+  --driver-card-border: #404050;
+  --driver-card-text: #f3f4f6;
+  --driver-card-text-light: #d1d5db;
+  --input-bg: #1f1f2e;
+  --input-border: #404050;
+  --input-border-focus: #b366ff;
+  --input-placeholder: #6b7280;
+  --autocomplete-bg: #1a1a24;
+  --autocomplete-item-bg: #262635;
+  --autocomplete-item-text: #f3f4f6;
+  --toggle-bg: #2d3748;
+  --toggle-active-bg: #b366ff;
+  --toggle-circle: #ffffff;
+  
+  /* Map Filter */
+  --leaflet-tile-filter: brightness(0.7) invert(1) contrast(1.3);
+}
+
+/* DARK MODE TOGGLE SWITCH STYLES */
+.theme-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.theme-toggle-icon {
+  font-size: 16px;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent-primary);
+  border-radius: 20px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'DM Sans', 'Arial', sans-serif;
+}
+
+.theme-toggle::before {
+  content: "☀️";
+  font-size: 14px;
+  display: inline-block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.theme-toggle::after {
+  content: "mode";
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.theme-toggle.dark-active {
+  background: var(--bg-secondary);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.theme-toggle.dark-active::before {
+  content: "🌙";
+  transform: rotate(20deg);
+}
+
+html.dark-mode .theme-toggle:hover {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(179, 102, 255, 0.5);
+}
+
+/* COMMON ELEMENT STYLING UTILITIES */
+
+/* Input Focus States */
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--input-border-focus) !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1) !important;
+}
+
+html.dark-mode input:focus,
+html.dark-mode select:focus,
+html.dark-mode textarea:focus {
+  box-shadow: 0 0 0 3px rgba(179, 102, 255, 0.15) !important;
+}
+
+/* Link Styling */
+a {
+  color: var(--accent-primary);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-secondary);
+}
+
+/* Button Base Styling */
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Status Badge Styling */
+.badge-success {
+  background-color: var(--success-light);
+  color: var(--success-color);
+}
+
+html.dark-mode .badge-success {
+  background-color: rgba(74, 222, 128, 0.15);
+  color: var(--success-color);
+}
+
+.badge-error {
+  background-color: var(--error-light);
+  color: var(--error-color);
+}
+
+html.dark-mode .badge-error {
+  background-color: rgba(255, 107, 107, 0.15);
+  color: var(--error-color);
+}
+
+.badge-warning {
+  background-color: var(--warning-light);
+  color: var(--warning-color);
+}
+
+html.dark-mode .badge-warning {
+  background-color: rgba(251, 191, 36, 0.15);
+  color: var(--warning-color);
+}
+
+.badge-info {
+  background-color: var(--info-light);
+  color: var(--info-color);
+}
+
+html.dark-mode .badge-info {
+  background-color: rgba(96, 165, 250, 0.15);
+  color: var(--info-color);
+}
+
+/* DARK MODE ADDITION END */

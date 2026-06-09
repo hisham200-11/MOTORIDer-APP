@@ -7,11 +7,12 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: 'Zen Dots', sans-serif;
-  background: #f5f6fa;
-  color: #333;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* HEADER */
@@ -20,8 +21,9 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .logo {
@@ -29,7 +31,8 @@ body {
   align-items: center;
   font-weight: 600;
   font-size: 18px;
-  color: #7c3aed;
+  color: var(--accent-primary);
+  transition: color 0.3s ease;
 }
 
 .logo i {
@@ -42,13 +45,15 @@ body {
 
 .user-actions span {
   margin-right: 15px;
-  color: #666;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .logout {
-  color: #7c3aed;
+  color: var(--accent-primary);
   cursor: pointer;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 /* MAIN */
@@ -64,11 +69,12 @@ body {
 .card {
   width: 100%;
   max-width: 600px;
-  background: #fff;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 25px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  box-shadow: var(--card-shadow);
   margin-bottom: 10px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card h2 {
@@ -78,8 +84,9 @@ body {
 
 .card p {
   font-size: 14px;
-  color: #777;
+  color: var(--text-tertiary);
   margin-bottom: 20px;
+  transition: color 0.3s ease;
 }
 
 .input-group {
@@ -90,7 +97,8 @@ body {
   font-size: 13px;
   margin-bottom: 5px;
   display: block;
-  color: #555;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .input-group input,
@@ -98,21 +106,38 @@ body {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color-dark);
   outline: none;
-  transition: 0.2s;
-  background: #fff;
+  transition: 0.3s ease;
+  background: var(--input-bg);
+  color: var(--text-primary);
   font-family: 'Zen Dots', sans-serif;
-  box-sizing: border-box; /* ADD THIS LINE */
+  box-sizing: border-box;
+}
+
+.input-group input::placeholder {
+  color: var(--input-placeholder);
 }
 
 .input-group input:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 2px rgba(124,58,237,0.1);
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+}
+
+html.dark-mode .input-group input:focus {
+  box-shadow: 0 0 0 3px rgba(179, 102, 255, 0.15);
 }
 
 select {
   appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237c3aed' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px !important;
+}
+
+html.dark-mode select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23b366ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
 .btn {
@@ -120,7 +145,7 @@ select {
   padding: 12px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(90deg, #9333ea, #7c3aed);
+  background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
   color: #fff;
   font-weight: 500;
   cursor: pointer;
@@ -135,21 +160,22 @@ select {
 .bottom-nav {
   display: flex;
   justify-content: space-around;
-  background: #fff;
-  border-top: 1px solid #eee;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
   padding: 10px 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-item {
   text-align: center;
   font-size: 12px;
-  color: #888;
+  color: var(--text-light);
   cursor: pointer;
   transition: 0.2s;
 }
 
 .nav-item.active {
-  color: #7c3aed;
+  color: var(--accent-primary);
 }
 
 .nav-item i {
@@ -158,18 +184,19 @@ select {
 }
 
 .nav-item:hover {
-  color: #7c3aed;
+  color: var(--accent-primary);
 }
 
 /* DRIVER PANEL */
 .drivers-panel {
   width: 100%;
   max-width: 600px;
-  background: #fff;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 20px;
   margin-top: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  box-shadow: var(--card-shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
   max-height: 0;
   overflow: hidden;
@@ -188,8 +215,9 @@ select {
 
 .subtitle {
   font-size: 14px;
-  color: #777;
+  color: var(--text-tertiary);
   margin-bottom: 15px;
+  transition: color 0.3s ease;
 }
 
 /* DRIVER ITEM */
@@ -198,7 +226,8 @@ select {
   justify-content: space-between;
   align-items: center;
   padding: 15px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
+  transition: border-color 0.3s ease;
 }
 
 .driver:last-child {
@@ -209,7 +238,7 @@ select {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #9333ea, #7c3aed);
+  background: linear-gradient(135deg, var(--avatar-gradient-start), var(--avatar-gradient-end));
   color: white;
   display: flex;
   align-items: center;
@@ -225,17 +254,19 @@ select {
 
 .driver-left p {
   font-size: 13px;
-  color: #555;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .driver-left small {
   font-size: 12px;
-  color: #888;
+  color: var(--text-light);
+  transition: color 0.3s ease;
 }
 
 .rating {
   font-size: 12px;
-  color: #f59e0b;
+  color: var(--warning-color);
 }
 
 .driver-right {
@@ -249,12 +280,13 @@ select {
 }
 
 .request-btn {
-  background: linear-gradient(90deg, #9333ea, #7c3aed);
+  background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
   border: none;
   color: white;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+  transition: opacity 0.3s ease;
 }
 
 .request-btn:hover {
@@ -287,31 +319,34 @@ select {
   height: 100%;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: var(--card-shadow);
 }
 
 .booking-card {
   width: 100%;
   max-width: 100%;
   position: static;
-  background: #ffffff;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  background: var(--bg-secondary);
+  box-shadow: var(--card-shadow-dark);
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 20px;
-  box-sizing: border-box; /* ADD THIS LINE */
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .booking-card h2 {
   font-size: 18px;
   margin: 0 0 5px 0;
-  color: #333;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .booking-card p {
   font-size: 13px;
-  color: #777;
+  color: var(--text-tertiary);
   margin-bottom: 20px;
+  transition: color 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -359,31 +394,34 @@ select {
 
 /* Driver Card Styling */
 .driver-card {
-  border: 1px solid #e2e8f0;
-  background: #f8fafc;
+  border: 1px solid var(--driver-card-border);
+  background: var(--driver-card-bg);
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .driver-info h4 {
   margin: 0 0 5px 0;
   font-size: 16px;
-  color: #1e293b;
+  color: var(--driver-card-text);
+  transition: color 0.3s ease;
 }
 
 .driver-info p {
   margin: 0;
   font-size: 13px;
-  color: #64748b;
+  color: var(--driver-card-text-light);
+  transition: color 0.3s ease;
 }
 
 /* Accept Driver Button */
 .accept-btn {
-  background: #10b981;
+  background: var(--success-color);
   color: white;
   border: none;
   padding: 8px 15px;
@@ -395,7 +433,7 @@ select {
 }
 
 .accept-btn:hover {
-  background: #059669;
+  background: var(--success-hover);
 }
 
 /* Input Group with Autocomplete Positioning */
@@ -409,13 +447,14 @@ select {
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #cbd5e1;
+  background: var(--autocomplete-bg);
+  border: 1px solid var(--border-color-dark);
   border-radius: 0 0 8px 8px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 9999;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Individual Autocomplete Item */
@@ -423,13 +462,14 @@ select {
   padding: 10px 12px;
   cursor: pointer;
   font-size: 13px;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
+  border-bottom: 1px solid var(--autocomplete-item-bg);
+  color: var(--autocomplete-item-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .autocomplete-item:hover {
-  background: #f1f5f9;
-  color: #9333ea;
+  background: var(--autocomplete-item-bg);
+  color: var(--accent-secondary);
 }
 
 /* Clear & Reset Button */
@@ -438,8 +478,8 @@ select {
   padding: 12px;
   margin-bottom: 15px;
   background: transparent;
-  color: #ef4444;
-  border: 1px solid #ef4444;
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
@@ -453,9 +493,9 @@ select {
 }
 
 .btn-clear:hover {
-  background: #fef2f2;
-  color: #dc2626;
-  border-color: #dc2626;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error-hover);
+  border-color: var(--error-hover);
 }
 
 /* Locate User Button */
@@ -463,9 +503,9 @@ select {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
-  background: #f0f9ff;
-  color: #0284c7;
-  border: 1px solid #0284c7;
+  background: rgba(2, 132, 199, 0.1);
+  color: var(--info-color);
+  border: 1px solid var(--info-color);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
@@ -479,9 +519,9 @@ select {
 }
 
 .btn-locate:hover {
-  background: #e0f2fe;
-  color: #0369a1;
-  border-color: #0369a1;
+  background: rgba(2, 132, 199, 0.2);
+  color: var(--info-hover);
+  border-color: var(--info-hover);
 }
 
 /* GCash Balance Card */

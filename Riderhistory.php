@@ -34,6 +34,10 @@ $total_spent = array_sum(array_column($rides, 'price'));
     <title>Ride History</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- DARK MODE ADDITION START -->
+    <link rel="stylesheet" href="dark-mode.css">
+    <script src="dark-mode.js"></script>
+    <!-- DARK MODE ADDITION END -->
     <link rel="stylesheet" href="Riderhome.css">
     <style>
         body {
@@ -304,6 +308,9 @@ $total_spent = array_sum(array_column($rides, 'price'));
         </div>
         <div class="user-actions">
             <span>Hi, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+            <!-- DARK MODE ADDITION START -->
+            <button class="theme-toggle" onclick="toggleDarkMode()"></button>
+            <!-- DARK MODE ADDITION END -->
             <a href="logout.php" class="logout">Logout</a>
         </div>
     </div>

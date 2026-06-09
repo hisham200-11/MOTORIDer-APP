@@ -15,6 +15,10 @@ if (!isset($_SESSION['customer_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <!-- DARK MODE ADDITION START -->
+    <link rel="stylesheet" href="dark-mode.css">
+    <!-- DARK MODE ADDITION END -->
+
     <link rel="stylesheet" href="Riderhome.css">
 
     <link href='https://fonts.googleapis.com/css?family=Zen Dots' rel='stylesheet'>
@@ -23,6 +27,10 @@ if (!isset($_SESSION['customer_id'])) {
     <!-- Leaflet Map Library -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- DARK MODE ADDITION START -->
+    <script src="dark-mode.js"></script>
+    <!-- DARK MODE ADDITION END -->
 
 </head>
 <body>
@@ -35,6 +43,9 @@ if (!isset($_SESSION['customer_id'])) {
     <div class="user-actions">
       <span>
       <span>Hi, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+      <!-- DARK MODE ADDITION START -->
+      <button class="theme-toggle" onclick="toggleDarkMode()"></button>
+      <!-- DARK MODE ADDITION END -->
       <a href="logout.php" class="logout">Logout</a>
       </span>
     </div>

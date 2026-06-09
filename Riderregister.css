@@ -9,18 +9,27 @@
 body {
   min-height: 100vh;
   font-family: 'Zen Dots', sans-serif;
-  color: whitesmoke;
+  color: var(--text-primary);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background: linear-gradient(120deg, #0b0033, #110827, #310c3a, #1d0505);
+  background: linear-gradient(120deg, #f5f6fa, #f0f1f5, #eff0f4, #f5f6fa);
   background-size: 400% 400%;
   animation: gradientMove 50s ease infinite;
 
   position: relative;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode background */
+html.dark-mode body {
+  color: var(--text-primary);
+  background: linear-gradient(120deg, #0b0033, #110827, #310c3a, #1d0505);
+  background-size: 400% 400%;
+  animation: gradientMove 50s ease infinite;
 }
 
 /* GRADIENT ANIMATION */
@@ -60,10 +69,16 @@ body::after {
   inset: 0;
 
   background:
-    radial-gradient(circle at 20% 30%, rgba(168,85,247,0.2), transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(217,70,239,0.2), transparent 40%);
+    radial-gradient(circle at 20% 30%, rgba(124,58,237,0.1), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(217,70,239,0.1), transparent 40%);
 
   z-index: -1;
+}
+
+html.dark-mode body::after {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(168,85,247,0.2), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(217,70,239,0.2), transparent 40%);
 }
 
 /* CARD */
@@ -72,36 +87,46 @@ body::after {
   padding: 30px;
   border-radius: 16px;
 
-  background: rgba(255,255,255,0.08);
+  background: var(--bg-secondary);
   backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px var(--shadow-color);
 
-  color: white;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* TEXT */
 .card h2 {
   margin-bottom: 5px;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .subtitle {
   font-size: 14px;
-  opacity: 0.8;
+  opacity: 0.85;
   margin-bottom: 20px;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .desc {
   font-size: 13px;
-  opacity: 0.7;
+  opacity: 0.75;
   margin: 15px 0;
+  color: var(--text-tertiary);
+  transition: color 0.3s ease;
 }
 
 /* TOGGLE */
 .toggle {
   display: flex;
-  background: rgba(255,255,255,0.1);
+  background: var(--toggle-bg);
   border-radius: 25px;
   padding: 5px;
   margin: 15px 0;
+  transition: background-color 0.3s ease;
 }
 
 .toggle-btn {
@@ -111,10 +136,12 @@ body::after {
   border-radius: 20px;
   cursor: pointer;
   transition: 0.3s;
+  color: var(--text-primary);
 }
 
 .toggle-btn.active {
-  background: linear-gradient(90deg, #a855f7, #d946ef);
+  background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+  color: white;
 }
 
 /* FORM */
@@ -137,19 +164,32 @@ body::after {
 .input-group label {
   font-size: 12px;
   margin-bottom: 5px;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .input-group input {
   padding: 10px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid var(--border-color-dark);
 
-  background: rgba(255,255,255,0.1);
-  color: white;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: 'Zen Dots', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .input-group input::placeholder {
-  color: rgba(255,255,255,0.6);
+  color: var(--input-placeholder);
+}
+
+.input-group input:focus {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+}
+
+html.dark-mode .input-group input:focus {
+  box-shadow: 0 0 0 3px rgba(179, 102, 255, 0.15);
 }
 
 /* BUTTON */
@@ -159,16 +199,23 @@ body::after {
   border-radius: 10px;
   border: none;
 
-  background: linear-gradient(90deg, #a855f7, #d946ef);
+  background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
   color: white;
   font-weight: bold;
+  font-family: 'Zen Dots', sans-serif;
 
   cursor: pointer;
   margin-top: 10px;
+  transition: opacity 0.3s ease;
 }
 
 .submit-btn:hover {
   opacity: 0.9;
+}
+
+.submit-btn:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 
 /* LOGIN TEXT */
@@ -176,9 +223,16 @@ body::after {
   text-align: center;
   margin-top: 15px;
   font-size: 12px;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .login a {
-  color: #d946ef;
+  color: var(--accent-primary);
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login a:hover {
+  color: var(--accent-secondary);
 }

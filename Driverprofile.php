@@ -25,6 +25,10 @@ $driver = $stmt->get_result()->fetch_assoc();
     <link rel="stylesheet" href="Driverhome.css">
     <link href='https://fonts.googleapis.com/css?family=Zen Dots' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- DARK MODE ADDITION START -->
+    <link rel="stylesheet" href="dark-mode.css">
+    <script src="dark-mode.js"></script>
+    <!-- DARK MODE ADDITION END -->
 </head>
 <body>
 
@@ -35,6 +39,9 @@ $driver = $stmt->get_result()->fetch_assoc();
 </div>
   <div class="user-actions">
     <span>Hi, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+    <!-- DARK MODE ADDITION START -->
+      <button class="theme-toggle" onclick="toggleDarkMode()"></button>
+    <!-- DARK MODE ADDITION END -->
     <a href="logout.php" class="logout">Logout</a>
   </div>
 </div>
