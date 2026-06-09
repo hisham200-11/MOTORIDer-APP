@@ -293,5 +293,71 @@ html.dark-mode .badge-info {
   color: var(--info-color);
 }
 
+/* =========================================
+   BOTTOM NAV DARK MODE
+   ========================================= */
+html.dark-mode .bottom-nav {
+    background: var(--bg-secondary) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
 
+html.dark-mode .nav-item {
+    color: var(--text-secondary);
+}
+
+html.dark-mode .nav-item:hover,
+html.dark-mode .nav-item.active {
+    color: var(--accent-primary) !important;
+}
+
+html.dark-mode .nav-item.active i {
+    color: var(--accent-primary) !important;
+}
+
+/* =========================================
+   RIDER HISTORY PAGE & MODAL DARK MODE
+   ========================================= */
+
+/* Section Titles and Empty State */
+html.dark-mode .section-title,
+html.dark-mode .empty-state {
+    color: var(--text-primary) !important;
+}
+
+/* The Ride Cards */
+html.dark-mode .ride-card {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark-mode .ride-card-header .driver {
+    color: var(--text-primary) !important;
+}
+
+html.dark-mode .ride-card-date,
+html.dark-mode .ride-card-route {
+    color: var(--text-secondary) !important;
+}
+
+/* The Receipt Modal */
+html.dark-mode .modal-box {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+html.dark-mode .modal-title,
+html.dark-mode .modal-value,
+html.dark-mode .modal-total .total-label {
+    color: var(--text-primary) !important;
+}
+
+html.dark-mode .modal-subtitle,
+html.dark-mode .modal-label {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-mode .modal-divider {
+    border-top: 1px solid var(--border-color) !important;
+}
 /* DARK MODE ADDITION END */

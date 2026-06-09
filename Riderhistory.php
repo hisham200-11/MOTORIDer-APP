@@ -34,10 +34,6 @@ $total_spent = array_sum(array_column($rides, 'price'));
     <title>Ride History</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- DARK MODE ADDITION START -->
-    <link rel="stylesheet" href="dark-mode.css">
-    <script src="dark-mode.js"></script>
-    <!-- DARK MODE ADDITION END -->
     <link rel="stylesheet" href="Riderhome.css">
     <style>
         body {
@@ -298,6 +294,8 @@ $total_spent = array_sum(array_column($rides, 'price'));
             z-index: 9999;
         }
     </style>
+    <link rel="stylesheet" href="dark-mode.css">
+    <script src="dark-mode.js"></script>
 </head>
 <body>
 
