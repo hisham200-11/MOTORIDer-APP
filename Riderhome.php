@@ -37,19 +37,18 @@ if (!isset($_SESSION['customer_id'])) {
     
 <!-- HEADER -->
   <div class="header">
-    <div class="logo">
-      <i class="fa-solid fa-motorcycle"></i> MotoRide
+        <div class="logo">
+            <i class="fa-solid fa-motorcycle"></i> MotoRide
+        </div>
+
+        <!-- THE FLOATING CENTER BUTTON -->
+        <button class="theme-toggle" onclick="toggleDarkMode()"></button>
+
+        <div class="user-actions">
+            <span>Hi, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
+            <a href="logout.php" class="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+        </div>
     </div>
-    <div class="user-actions">
-      <span>
-      <span>Hi, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
-      <!-- DARK MODE ADDITION START -->
-      <button class="theme-toggle" onclick="toggleDarkMode()"></button>
-      <!-- DARK MODE ADDITION END -->
-      <a href="logout.php" class="logout">Logout</a>
-      </span>
-    </div>
-  </div>
 
   <!-- MAIN CONTENT -->
   <div class="split-layout">

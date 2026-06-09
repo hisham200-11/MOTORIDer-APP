@@ -24,6 +24,7 @@ body {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  position: relative;
 }
 
 .logo {
@@ -40,13 +41,29 @@ body {
 }
 
 .user-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Anchors the block to the right */
+  gap: 15px;
+  font-size: 14px;
 }
+
 .user-actions span {
-    margin-right: -38px;
-    color: var(--text-secondary);
+  color: var(--text-secondary);
+  white-space: nowrap; /* Keeps the name on one line */
+  text-align: right; /* Stretches long names safely toward the left */
+}
+
+.logout {
+  color: var(--accent-primary);
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  flex-shrink: 0; /* THE SHIELD: Prevents long names from squishing the logout button */
+}
+
+.logo {
+  flex-shrink: 0; /* THE SHIELD: Protects the logo on the left */
 }
 
 .user-actions span,
@@ -66,6 +83,14 @@ body {
   padding: 40px 20px;
   gap: 20px;
 }
+
+.header .theme-toggle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
 .card {
   width: 100%;
   max-width: 600px;
@@ -550,20 +575,17 @@ html.dark-mode .input-group input:focus {
    RIDE STATUS CONTAINER FIX
    ========================================= */
 #rideStatus {
-    width: fit-content; /* Shrinks the box to exactly fit the text inside */
-    min-width: 320px; /* Keeps it from getting too skinny on very short text */
-    max-width: 100%; /* Prevents it from spilling off mobile screens */
-    margin: 35px auto; /* 35px large margin on top/bottom, and 'auto' centers it */
+    width: 100%; 
+    margin: 0 0 20px 0; 
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
 #rideStatus > div {
     width: 100%;
-    padding: 25px !important; /* Overrides the PHP to ensure a nice, loose fit inside */
+    padding: 25px !important; 
     box-sizing: border-box;
 }
-
 
 /* Animation for notifications */
 @keyframes slideIn {

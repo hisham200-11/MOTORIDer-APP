@@ -49,16 +49,13 @@ $checked = ($row['status'] === 'on') ? 'checked' : '';
             <i class="fa-solid fa-motorcycle"></i> MotoRide
         </div>
 
+        <button class="theme-toggle" onclick="toggleDarkMode()"></button>
+
         <div class="user-actions">
             <span>Hi, <?php echo htmlspecialchars($_SESSION['name']); ?></span>
-            <!-- DARK MODE ADDITION START -->
-            <button class="theme-toggle" onclick="toggleDarkMode()"></button>
-            <!-- DARK MODE ADDITION END -->
-            <i class="fa-solid fa-arrow-right-from-bracket"></i> 
-            <a href="logout.php" class="logout">Logout</a>
+            <a href="logout.php" class="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </div>
     </div>
-
     <div class="main-wrapper">
         <!-- LEFT PANEL: INFO -->
         <div class="info-panel">

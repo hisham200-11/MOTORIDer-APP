@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p>${driver.brand} ${driver.model}</p>
                             <p style="color: #9333ea; font-size: 12px;">${driver.color}</p>
                         </div>
-                        <button class="accept-btn" onclick="selectDriver('${driver.driver_id}', '${driver.name}')">Accept</button>
+                        <button class="accept-btn" onclick="selectDriver('${driver.driver_id}', '${driver.name}')">Request</button>
                     `;
                     driverList.appendChild(driverCard);
                 });

@@ -30,6 +30,9 @@ body {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  position: relative; /* THE ANCHOR: Added to keep the middle button trapped in the header */
+  
+  
 }
 
 .logo {
@@ -45,23 +48,37 @@ body {
   margin-right: 8px;
 }
 
+.header .theme-toggle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
 .user-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* space between Hi, User and Logout */
-    font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Anchors the block to the right */
+  gap: 15px;
+  font-size: 14px;
 }
 
 .user-actions span {
-    margin-right: -35px; /* remove old margin */
-    color: var(--text-secondary);
+  color: var(--text-secondary);
+  white-space: nowrap; /* Keeps the name on one line */
+  text-align: right; /* Stretches long names safely toward the left */
 }
 
 .logout {
-    color: var(--accent-primary);
-    cursor: pointer;
-    font-weight: 500;
-    text-decoration: none;
+  color: var(--accent-primary);
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  flex-shrink: 0; /* THE SHIELD: Prevents long names from squishing the logout button */
+}
+
+.logo {
+  flex-shrink: 0; /* THE SHIELD: Protects the logo on the left */
 }
 
 /* STATS ROW */
