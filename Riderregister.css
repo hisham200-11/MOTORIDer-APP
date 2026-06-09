@@ -172,7 +172,7 @@ html.dark-mode body::after {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid var(--border-color-dark);
-
+  width:100%;
   background: var(--input-bg);
   color: var(--text-primary);
   font-family: 'Zen Dots', sans-serif;
