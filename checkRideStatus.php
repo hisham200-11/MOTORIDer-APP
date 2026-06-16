@@ -14,13 +14,17 @@ if (!$rider_name) {
     exit;
 }
  
-// ✅ EXPLICITLY SELECT COLUMNS AND CAST dropoff AS CHAR
+// ✅ EXPLICITLY SELECT COLUMNS (INCLUDING MAP COORDINATES)
 $stmt = $conn->prepare("
     SELECT 
         rr.id,
         rr.rider_name,
         rr.pickup,
         CAST(rr.dropoff AS CHAR) AS dropoff,
+        rr.pickup_lat,
+        rr.pickup_lng,
+        rr.dropoff_lat,
+        rr.dropoff_lng,
         rr.distance,
         rr.price,
         rr.status,
@@ -70,10 +74,14 @@ if ($ride['status'] === 'pending') {
 } elseif ($ride['status'] === 'accepted') {
     echo "
     <div style='padding: 10px;'>
+    
         <span id='activeRidePickup' style='display:none;'>{$ride['pickup']}</span>
         <span id='activeRideDropoff' style='display:none;'>{$ride['dropoff']}</span>
+        
+        <div id='activeRideCoords' data-plat='" . ($ride['pickup_lat'] ?? '') . "' data-plng='" . ($ride['pickup_lng'] ?? '') . "' data-dlat='" . ($ride['dropoff_lat'] ?? '') . "' data-dlng='" . ($ride['dropoff_lng'] ?? '') . "' style='display:none;'></div>
+        
         <p style='font-size:15px; color:#16a34a; font-weight:bold;'>✅ Driver is on the way!</p>
- 
+         
         <hr style='border:none; border-top:1px solid #eee; margin: 10px 0;'>
  
         <p style='font-weight:bold; margin-bottom:8px;'>🧑 Driver Information</p>
@@ -103,6 +111,9 @@ if ($ride['status'] === 'pending') {
     <div style='padding: 10px;'>
         <span id='activeRidePickup' style='display:none;'>{$ride['pickup']}</span>
         <span id='activeRideDropoff' style='display:none;'>{$ride['dropoff']}</span>
+        
+        <div id='activeRideCoords' data-plat='" . ($ride['pickup_lat'] ?? '') . "' data-plng='" . ($ride['pickup_lng'] ?? '') . "' data-dlat='" . ($ride['dropoff_lat'] ?? '') . "' data-dlng='" . ($ride['dropoff_lng'] ?? '') . "' style='display:none;'></div>
+
         <p style='font-size:15px; color:#9333ea; font-weight:bold;'>🚀 Ride in Progress!</p>
  
         <hr style='border:none; border-top:1px solid #eee; margin: 10px 0;'>
@@ -131,7 +142,7 @@ if ($ride['status'] === 'pending') {
  
 } elseif ($ride['status'] === 'completed') {
  
-if ($ride['payment_method'] === 'GCash' && empty($ride['gcash_deducted'])) {
+    if ($ride['payment_method'] === 'GCash' && empty($ride['gcash_deducted'])) {
         $customer_id = $_SESSION['customer_id'];
         $fare = $ride['price'];
  

@@ -42,8 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    // Insert ride request with coordinates
-    $stmt = $conn->prepare("INSERT INTO ride_requests (rider_name, pickup, dropoff, pickup_lat, pickup_lng, dropoff_lat, dropoff_lng, distance, price, payment_method) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // Generate a secure 32-character random tracking token
+    $tracking_token = bin2hex(random_bytes(16));
+    
+    // Insert ride request with coordinates AND tracking token
+    $stmt = $conn->prepare("INSERT INTO ride_requests (rider_name, pickup, dropoff, pickup_lat, pickup_lng, dropoff_lat, dropoff_lng, distance, price, payment_method, tracking_token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     if (!$stmt) {
         http_response_code(500);
@@ -51,10 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    $stmt->bind_param("sssdddddds", $rider_name, $pickup, $dropoff, $pickup_lat, $pickup_lng, $dropoff_lat, $dropoff_lng, $distance, $fare, $payment_method);
+    // Bind the 11 variables (notice the extra 's' at the end of the type string for the token)
+    $stmt->bind_param("sssddddddss", $rider_name, $pickup, $dropoff, $pickup_lat, $pickup_lng, $dropoff_lat, $dropoff_lng, $distance, $fare, $payment_method, $tracking_token);
     
     if ($stmt->execute()) {
-        echo json_encode(["success" => true, "message" => "Ride booked successfully"]);
+        // Send the token back to JavaScript in the success response!
+        echo json_encode([
+            "success" => true, 
+            "message" => "Ride booked successfully",
+            "tracking_token" => $tracking_token
+        ]);
     } else {
         http_response_code(500);
         echo json_encode(["success" => false, "error" => "Failed to book ride: " . $stmt->error]);

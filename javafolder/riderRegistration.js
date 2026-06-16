@@ -213,8 +213,33 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayRideStatus(html) {
       const rideStatus = document.getElementById('rideStatus');
       rideStatus.innerHTML = `<div style="border: 3px solid #9333ea; border-radius: 8px; padding: 15px; background: #f9f5ff;">${html}</div>`;
-    }
 
+      // NEW: Restore pins and route if they are missing after a page refresh
+      setTimeout(() => {
+          const coordsDiv = document.getElementById('activeRideCoords');
+          if (coordsDiv && !pickupMarker && !dropoffMarker) {
+              const plat = parseFloat(coordsDiv.getAttribute('data-plat'));
+              const plng = parseFloat(coordsDiv.getAttribute('data-plng'));
+              const dlat = parseFloat(coordsDiv.getAttribute('data-dlat'));
+              const dlng = parseFloat(coordsDiv.getAttribute('data-dlng'));
+
+              if (plat && plng && dlat && dlng) {
+                  // 1. Drop Pickup Pin
+                  pickupMarker = L.marker([plat, plng], {
+                      icon: L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] })
+                  }).addTo(map).bindPopup('Pickup Location');
+
+                  // 2. Drop Dropoff Pin
+                  dropoffMarker = L.marker([dlat, dlng], {
+                      icon: L.icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png', iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41] })
+                  }).addTo(map).bindPopup('Dropoff Location');
+
+                  // 3. Draw Route quietly (without touching the HTML receipt)
+                  drawActiveRoute(plat, plng, dlat, dlng);
+              }
+          }
+      }, 100);
+    }
     // ============================================
     // GEOLOCATION & MAP INITIALIZATION FOR BOOKING
     // ============================================
@@ -460,6 +485,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================
+    // RESTORE ACTIVE ROUTE ON REFRESH
+    // ============================================
+    function drawActiveRoute(lat1, lng1, lat2, lng2) {
+      if (routeLine) map.removeLayer(routeLine);
+      
+      fetch(`https://router.project-osrm.org/route/v1/driving/${lng1},${lat1};${lng2},${lat2}?overview=full&geometries=geojson`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.routes && data.routes[0]) {
+            const coordinates = data.routes[0].geometry.coordinates;
+            
+            routeLine = L.polyline(
+              coordinates.map(coord => [coord[1], coord[0]]),
+              { color: '#3b82f6', weight: 5, opacity: 0.7 }
+            ).addTo(map);
+            
+            // Auto-zoom to fit both pins perfectly on the screen
+            const bounds = L.latLngBounds([[lat1, lng1], [lat2, lng2]]);
+            map.fitBounds(bounds, { padding: [50, 50] });
+          }
+        })
+        .catch(err => console.error('OSRM active route error:', err));
+    }
+
+    // ============================================
     // FARE CALCULATION
     // ============================================
     function calculateFareAmount(distanceKm) {
@@ -690,6 +740,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
+              if (data.tracking_token) {
+                    localStorage.setItem('active_ride_token', data.tracking_token);
+                    console.log("Tracking token saved:", data.tracking_token);
+                }
                 document.getElementById('driversPanel').classList.add('hidden');
                 document.getElementById('driversPanel').classList.remove('show');
 
